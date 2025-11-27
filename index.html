@@ -10,7 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.16">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
 </script>
 <script>
 tailwind.config = {
@@ -46,11 +49,6 @@ scroll-behavior: smooth;
 }
 body {
 font-family: 'Inter', sans-serif;
-}
-.hero-bg {
-background-image: url('https://readdy.ai/api/search-image?query=modern%20creative%20agency%20workspace%20with%20gradient%20blue%20to%20purple%20background%2C%20clean%20minimalist%20design%2C%20soft%20lighting%2C%20professional%20atmosphere%2C%20empty%20space%20on%20left%20side%20for%20text%2C%20artistic%20elements%20visible%20on%20right%20side%2C%20high-quality%20professional%20photography&width=1920&height=1080&seq=hero1&orientation=landscape');
-background-size: cover;
-background-position: center;
 }
 .service-card:hover {
 transform: translateY(-5px);
@@ -96,7 +94,7 @@ margin: 0;
 }
 </style>
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-white text-gray-800" data-barba="wrapper">
 <!-- Navigation -->
 <header class="fixed w-full bg-white bg-opacity-90 backdrop-blur-sm shadow-sm z-50">
 <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
@@ -116,8 +114,10 @@ margin: 0;
 </div>
 </nav>
 </header>
+<main data-barba="container" data-barba-namespace="home">
 <!-- Hero Section -->
-<section id="home" class="hero-bg min-h-screen flex items-center pt-16">
+<section id="home" class="min-h-screen flex items-center pt-16 relative">
+<canvas id="hero-3d-background" class="absolute inset-0 z-0"></canvas>
 <div class="w-full max-w-7xl mx-auto px-6 py-20">
 <div class="w-full md:w-1/2 bg-white bg-opacity-90 backdrop-blur-md p-10 !rounded-xl">
 <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Empowering Your Creativity, Amplifying Your Brand</h1>
@@ -357,6 +357,7 @@ Learn More
 </div>
 </div>
 </section>
+</main>
 <!-- Footer -->
 <footer class="bg-gray-900 text-white py-12">
 <div class="max-w-7xl mx-auto px-6">
@@ -455,7 +456,196 @@ document.addEventListener("DOMContentLoaded", function () {
       });
        scrollContainer.style.cursor = 'grab';
   }
+  
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Service Cards Animation
+    gsap.from(".service-card", {
+        scrollTrigger: {
+            trigger: "#services",
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none none"
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.2
+    });
+
+    // Creator Cards Animation
+    gsap.from(".creator-scroll .flex-shrink-0", {
+        scrollTrigger: {
+            trigger: "#creators",
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none none"
+        },
+        x: -50,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.2
+    });
+
+    // Service Card Hover Animation
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            gsap.to(card, { 
+                y: -10, 
+                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                duration: 0.3
+            });
+        });
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, { 
+                y: 0, 
+                boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                duration: 0.3
+            });
+        });
+    });
+
 });
+</script>
+<script>
+    // --- Refactored and Interactive 3D Hero Animation ---
+    
+    // Encapsulate the animation logic in a function
+    function initHeroAnimation() {
+        const canvas = document.getElementById('hero-3d-background');
+        if (!canvas) return;
+
+        // Avoid re-initializing on fast transitions
+        if (canvas.getAttribute('data-initialized')) return;
+        canvas.setAttribute('data-initialized', 'true');
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Mouse tracking
+        const mouse = new THREE.Vector2();
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Particle System
+        const particleCount = 7000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        const color = new THREE.Color();
+        const baseColor = new THREE.Color('#3b82f6'); // Using your primary color
+
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 15;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+
+            color.set(baseColor);
+            // Add some variance to the color
+            color.lerp(new THREE.Color(0xffffff), (Math.random() - 0.5) * 0.5);
+            colors[i * 3] = color.r;
+            colors[i * 3 + 1] = color.g;
+            colors[i * 3 + 2] = color.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending,
+            sizeAttenuation: true
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+        
+        const group = new THREE.Group();
+        group.add(particles);
+        scene.add(group);
+
+        camera.position.z = 5;
+
+        // Animation
+        const clock = new THREE.Clock();
+        const animate = () => {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Rotate the group
+            group.rotation.y = elapsedTime * 0.1;
+
+            // Use GSAP for smooth mouse tracking
+            gsap.to(group.rotation, {
+                duration: 2,
+                x: -mouse.y * 0.2,
+                y: group.rotation.y + (-mouse.x * 0.2), // combine rotation with mouse
+                ease: "power2.out"
+            });
+            
+            renderer.render(scene, camera);
+        };
+
+        animate();
+
+        // Handle Window Resizing
+        const onResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        };
+        
+        window.addEventListener('resize', onResize);
+        
+        // Cleanup on Barba leave
+        barba.hooks.leave(() => {
+            window.removeEventListener('resize', onResize);
+            canvas.removeAttribute('data-initialized');
+        });
+    }
+
+    // --- Barba.js Page Transitions ---
+    barba.init({
+        transitions: [{
+            name: 'fade-transition',
+            leave(data) {
+                return gsap.to(data.current.container, {
+                    opacity: 0,
+                    duration: 0.5
+                });
+            },
+            enter(data) {
+                return gsap.from(data.next.container, {
+                    opacity: 0,
+                    duration: 0.5
+                });
+            }
+        }],
+        views: [{
+            namespace: 'home',
+            // This hook is called when the home view is entered
+            afterEnter() {
+                initHeroAnimation();
+            }
+        }]
+    });
+    
+    // Initial load call for non-barba navigation
+    if (document.querySelector('[data-barba-namespace="home"]')) {
+        initHeroAnimation();
+    }
 </script>
 </body>
 </html>
