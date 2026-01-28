@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+import { Image } from 'astro:assets';
+
+import img1 from '../assets/smm_bindutoonfun_profile.jpg';
+import img2 from '../assets/smm_pocketfilm_profile.jpg';
+import img3 from '../assets/smm_men.jpg';
+
+const profiles = [
+  { img: img1, name: "BinduToonFun", desc: "Daily Anime Comedy" },
+  { img: img2, name: "Pocket Film Factory", desc: "Video Editing Tips" },
+  { img: img3, name: "Men Cyclopedia Skin", desc: "Grooming & Skincare" }
+];
+---
+
+<BaseLayout title="Social Media | RY Services">
+  <ServiceHero 
+    badge="Community First"
+    title="Social Media Management"
+    subtitle="End-to-end community management designed to scale your brand's voice and engagement organically."
+  />
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-center">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Organic Velocity</h2>
+          <p class="text-lg text-gray-600 leading-relaxed font-medium mb-10">
+            We handle the daily complexity of content creation, scheduling, and community engagement so you can focus on building your core business.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { i: "ri-calendar-todo-fill", t: "Content Calendars", c: "bg-blue-50" },
+              { i: "ri-chat-voice-fill", t: "Community Care", c: "bg-purple-50" },
+              { i: "ri-bar-chart-2-fill", t: "Weekly Analytics", c: "bg-rose-50" },
+              { i: "ri-user-heart-fill", t: "Influencer Sync", c: "bg-orange-50" }
+            ].map(item => (
+              <div class={`p-6 ${item.c} rounded-2xl flex items-center space-x-4`}>
+                <i class={`${item.i} text-xl text-gray-900`}></i>
+                <span class="font-bold text-gray-900 text-sm">{item.t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="bg-gray-50 rounded-[3rem] border border-gray-100 p-10 text-center">
+          <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+            <i class="ri-discuss-line text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-black text-gray-900 mb-4">Voice Synchronization</h3>
+          <p class="text-gray-500 font-medium">We mirror your brand's unique personality across every comment, post, and direct message.</p>
+        </div>
+      </div>
+
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">Managed Profiles</h2>
+        <p class="text-lg text-gray-500">Real-world examples of communities we scale.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {profiles.map(profile => (
+          <div class="bg-white border border-gray-100 rounded-[2.5rem] p-8 flex flex-col items-center text-center hover:shadow-xl transition-all">
+            <div class="w-full aspect-square rounded-2xl overflow-hidden mb-6 border-4 border-gray-50 shadow-inner">
+              <Image src={profile.img} alt={profile.name} width={300} height={300} class="w-full h-full object-contain bg-white" />
+            </div>
+            <h3 class="text-xl font-black text-gray-900 mb-1">{profile.name}</h3>
+            <p class="text-primary font-bold uppercase tracking-widest text-[10px]">{profile.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

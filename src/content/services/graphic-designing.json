@@ -1,0 +1,9 @@
+{
+  "title": "Graphic Designing",
+  "description": "Eye-catching visuals and designs that communicate your brand identity and captivate your target audience.",
+  "icon": "ri-palette-line",
+  "href": "/graphic-designing",
+  "colorClass": "bg-emerald-50",
+  "iconColor": "text-secondary",
+  "order": 2
+}

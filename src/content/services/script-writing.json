@@ -1,0 +1,9 @@
+{
+  "title": "Script Writing",
+  "description": "Compelling narratives crafted by professional writers to engage your audience and convey your message effectively.",
+  "icon": "ri-pen-nib-line",
+  "href": "/script-writing",
+  "colorClass": "bg-blue-50",
+  "iconColor": "text-primary",
+  "order": 1
+}

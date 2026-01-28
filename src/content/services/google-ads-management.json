@@ -1,0 +1,9 @@
+{
+  "title": "Google Ads Management",
+  "description": "Effective Google Ads campaigns that drive targeted traffic and maximize your return on investment.",
+  "icon": "ri-advertisement-line",
+  "href": "/google-ads-management",
+  "colorClass": "bg-rose-50",
+  "iconColor": "text-rose-600",
+  "order": 5
+}

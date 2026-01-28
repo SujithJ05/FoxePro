@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+import { Image } from 'astro:assets';
+
+import imgSmart from '../assets/website_preview_smartshop.jpg';
+import imgPort from '../assets/website_preview_portfolio.jpg';
+
+const sites = [
+  { img: imgSmart, title: "SmartShop", desc: "A modern E-commerce experience with advanced filtering.", src: "/sample-sites/ecommerce-store/index.html" },
+  { img: imgPort, title: "Creative Agency", desc: "A sleek, motion-driven portfolio for visual creators.", src: "/sample-sites/creative-portfolio/index.html" }
+];
+---
+
+<BaseLayout title="Website Design | RY Services">
+  <ServiceHero 
+    badge="Digital Experience"
+    title="Website Designing Services"
+    subtitle="Conversion-optimized web experiences built for high-performance startups."
+  />
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
+        {[
+          { i: "ri-responsive-line", t: "Responsive", c: "text-primary" },
+          { i: "ri-flashlight-line", t: "Fast Loading", c: "text-secondary" },
+          { i: "ri-user-star-line", t: "User Centric", c: "text-rose-500" }
+        ].map(item => (
+          <div class="p-8 bg-gray-50 rounded-3xl border border-gray-100 flex flex-col items-center text-center">
+            <i class={`${item.i} text-3xl ${item.c} mb-4`}></i>
+            <h3 class="text-xl font-black text-gray-900">{item.t}</h3>
+          </div>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {sites.map(site => (
+          <div class="group bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500">
+            <div class="aspect-video overflow-hidden">
+              <Image src={site.img} alt={site.title} width={800} height={450} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            </div>
+            <div class="p-10">
+              <h3 class="text-2xl font-black text-gray-900 mb-2">{site.title}</h3>
+              <p class="text-gray-500 font-medium mb-8">{site.desc}</p>
+              <button 
+                class="website-trigger w-full bg-gray-900 text-white py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-primary transition-all"
+                data-src={site.src}
+              >
+                Launch Preview
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Website Modal -->
+  <div id="website-modal" class="fixed inset-0 bg-gray-950/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-10 z-[100] hidden">
+    <div class="relative w-full h-full max-w-6xl max-h-[90vh] rounded-3xl overflow-hidden bg-white shadow-2xl">
+      <iframe id="modal-iframe" class="w-full h-full" src="about:blank"></iframe>
+      <button id="close-website-modal" class="absolute top-4 right-4 w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center text-xl hover:bg-red-600 transition-all z-[110]">&times;</button>
+    </div>
+  </div>
+
+  <script is:inline>
+    function initWebsitePage() {
+      const modal = document.getElementById("website-modal");
+      const iframe = document.getElementById("modal-iframe");
+      const closeBtn = document.getElementById("close-website-modal");
+      const triggers = document.querySelectorAll(".website-trigger");
+
+      triggers.forEach(t => {
+        t.onclick = () => {
+          iframe.src = t.dataset.src;
+          modal.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+        };
+      });
+
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          modal.classList.add("hidden");
+          iframe.src = "about:blank";
+          document.body.style.overflow = "";
+        };
+      }
+    }
+    document.addEventListener('astro:page-load', initWebsitePage);
+  </script>
+</BaseLayout>

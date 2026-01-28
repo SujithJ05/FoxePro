@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+
+const videos = [
+  { src: "/assets/input_file_0.mp4", title: "Hair Care Tips", desc: "Dynamic text and graphic overlays." },
+  { src: "/assets/input_file_1.mp4", title: "Dark Circles", desc: "Educational content with motion graphics." },
+  { src: "/assets/input_file_2.mp4", title: "Moringa Supplement", desc: "Explainer video for herbal products." }
+];
+---
+
+<BaseLayout title="Video Editing | RY Services">
+  <ServiceHero 
+    badge="Cinematic Craft"
+    title="Video Editing Services"
+    subtitle="High-impact post-production that transforms raw footage into professional visual stories."
+  />
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Production Quality</h2>
+          <p class="text-lg text-gray-600 leading-relaxed font-medium mb-10">
+            We handle everything from precision cuts to advanced color correction, ensuring your brand message is delivered with cinematic clarity.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            {[
+              { i: "ri-scissors-cut-fill", t: "Precision Cuts" },
+              { i: "ri-palette-fill", t: "Color Grading" },
+              { i: "ri-mic-fill", t: "Audio Polish" },
+              { i: "ri-magic-fill", t: "Motion Graphics" }
+            ].map(item => (
+              <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center text-center">
+                <i class={`${item.i} text-2xl text-primary mb-3`}></i>
+                <span class="font-bold text-gray-800 text-sm">{item.t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="bg-gray-900 rounded-[2rem] aspect-video overflow-hidden shadow-2xl border-8 border-gray-100 flex items-center justify-center group relative">
+          <video muted loop playsinline class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity">
+            <source src="/assets/input_file_0.mp4" type="video/mp4" />
+          </video>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-gray-900 shadow-xl pointer-events-none">
+              <i class="ri-play-fill text-3xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">Editing Portfolio</h2>
+        <p class="text-lg text-gray-500">Watch our latest work in action.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {videos.map((video) => (
+          <div class="group relative overflow-hidden rounded-3xl bg-gray-900 video-card aspect-[16/10] border border-white/10 shadow-lg">
+            <video 
+              muted loop playsinline preload="metadata" 
+              class="w-full h-full object-cover opacity-60 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100 cursor-pointer video-trigger"
+              data-video-src={video.src}
+            >
+              <source src={`${video.src}#t=0.1`} type="video/mp4" />
+            </video>
+            <div class="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-white bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all">
+              <h3 class="text-lg font-black mb-1">{video.title}</h3>
+              <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">{video.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Modal -->
+  <div id="video-modal" class="fixed inset-0 bg-gray-950/95 backdrop-blur-2xl flex items-center justify-center p-4 z-[100] hidden">
+    <div class="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+      <video id="modal-video" controls autoplay class="w-full h-full bg-black"></video>
+      <button id="close-modal" class="absolute top-4 right-4 w-10 h-10 bg-white text-gray-900 rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform z-[110] font-black">&times;</button>
+    </div>
+  </div>
+
+<script>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initVideoPage() {
+      const modal = document.getElementById("video-modal");
+      const modalVideo = document.getElementById("modal-video");
+      const closeBtn = document.getElementById("close-modal");
+      const triggers = document.querySelectorAll(".video-trigger");
+
+      triggers.forEach(t => {
+        t.onclick = () => {
+          modalVideo.src = t.dataset.videoSrc;
+          modal.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+        };
+      });
+
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          modal.classList.add("hidden");
+          modalVideo.pause();
+          modalVideo.src = "";
+          document.body.style.overflow = "";
+        };
+      }
+
+      gsap.from(".video-card", {
+        scrollTrigger: { trigger: ".grid", start: "top 85%" },
+        y: 30, opacity: 0, duration: 0.6, stagger: 0.1
+      });
+    }
+    document.addEventListener('astro:page-load', initVideoPage);
+  </script>
+</BaseLayout>

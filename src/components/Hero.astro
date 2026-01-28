@@ -1,0 +1,153 @@
+---
+---
+<section id="home" class="min-h-screen flex items-center pt-16 relative bg-gradient-to-br from-blue-50 to-white dark:from-gray-950 dark:to-gray-900 overflow-hidden transition-colors duration-500">
+  <div id="hero-placeholder" class="absolute inset-0 z-0 bg-gradient-to-br from-blue-100/50 via-white to-blue-50/50 dark:from-blue-900/20 dark:via-gray-950 dark:to-gray-900 transition-colors duration-500"></div>
+  <canvas id="hero-3d-background" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-1000"></canvas>
+  
+  <div class="w-full max-w-7xl mx-auto px-6 py-20 relative z-20">
+    <div class="w-full md:w-2/3">
+      
+      <h1 id="hero-title" class="text-5xl md:text-8xl font-black leading-[1] mb-10 text-gray-900 dark:text-white tracking-tighter transition-colors duration-500">
+        <!-- Text will be split by JS -->
+        Empowering Your Creativity, Amplifying Your Brand
+      </h1>
+
+      <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-12 leading-relaxed font-medium max-w-2xl reveal-hero-step transition-colors duration-500">
+        Bringing your vision to life with elite expertise in Script Writing, Graphic Designing, and Video Editing.
+      </p>
+
+      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 reveal-hero-step">
+        <a href="#contact" class="magnetic-btn inline-block bg-primary text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-700 transition-all shadow-xl shadow-primary/25 text-center">
+          Get in Touch
+        </a>
+        <a href="#services" class="magnetic-btn inline-block bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-center">
+          Our Vision
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import * as THREE from 'three';
+  import { gsap } from 'gsap';
+
+  function splitTextIntoWords(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el || el.getAttribute('data-split')) return;
+    const text = el.innerText;
+    const words = text.split(' ');
+    el.innerHTML = words.map(word => `<span class="word-hidden"><span class="inline-block word-inner">${word}</span></span>`).join(' ');
+    el.setAttribute('data-split', 'true');
+  }
+
+  function initHero() {
+    splitTextIntoWords('hero-title');
+    
+    const canvas = document.getElementById('hero-3d-background');
+    if (!canvas) return;
+
+    if (canvas.getAttribute('data-initialized')) {
+      canvas.classList.remove('opacity-0');
+      const placeholder = document.getElementById('hero-placeholder');
+      if (placeholder) placeholder.classList.add('opacity-0');
+      return;
+    }
+    canvas.setAttribute('data-initialized', 'true');
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const mouse = new THREE.Vector2();
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 2000 : 7000;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    const color = new THREE.Color();
+    const baseColor = new THREE.Color('#3b82f6');
+
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 15;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+
+      color.set(baseColor);
+      color.lerp(new THREE.Color(0xffffff), (Math.random() - 0.5) * 0.5);
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({ 
+      size: 0.05, 
+      vertexColors: true, 
+      transparent: true, 
+      opacity: 0.8, 
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true 
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    
+    const primitives = new THREE.Group();
+    const glassMat = new THREE.MeshPhongMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.2, shininess: 100 });
+    const shapes = [
+      new THREE.IcosahedronGeometry(1.2, 0), 
+      new THREE.BoxGeometry(1, 1, 1), 
+      new THREE.TorusGeometry(0.8, 0.3, 16, 100),
+      new THREE.OctahedronGeometry(1, 0)
+    ];
+    shapes.forEach((geo) => {
+      const mesh = new THREE.Mesh(geo, glassMat);
+      mesh.position.set((Math.random()-0.5)*15, (Math.random()-0.5)*10, (Math.random()-0.5)*5);
+      primitives.add(mesh);
+    });
+
+    scene.add(new THREE.PointLight(0xffffff, 1).set(5,5,5));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const group = new THREE.Group();
+    group.add(particles); group.add(primitives);
+    scene.add(group);
+    camera.position.z = 5;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      group.rotation.y += 0.0003;
+      primitives.children.forEach(p => { p.rotation.x += 0.005; p.rotation.y += 0.005; });
+      gsap.to(group.rotation, { duration: 2, x: -mouse.y * 0.1, y: group.rotation.y + (-mouse.x * 0.1) });
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    canvas.classList.remove('opacity-0');
+    document.getElementById('hero-placeholder').classList.add('opacity-0');
+  }
+
+  function revealHero() {
+    const tl = gsap.timeline({ delay: 0.5 });
+    
+    gsap.set(".reveal-hero-step", { autoAlpha: 0, y: 30 });
+    gsap.set(".word-inner", { y: "100%" });
+
+    tl.to(".reveal-hero-step", { autoAlpha: 1, y: 0, duration: 1, stagger: 0.2, ease: "power4.out" })
+      .to(".word-inner", { y: "0%", duration: 1, stagger: 0.05, ease: "expo.out" }, "-=0.8");
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initHero();
+    revealHero();
+  });
+</script>

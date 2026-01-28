@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+---
+
+<BaseLayout title="Script Writing | RY Services">
+  <ServiceHero 
+    badge="Impactful Copy"
+    title="Script Writing Services"
+    subtitle="Strategic narratives designed to engage your audience and build lasting brand authority."
+  />
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-center">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Strategic Narratives</h2>
+          <p class="text-lg text-gray-600 leading-relaxed font-medium mb-10">
+            A strong script is the foundation of every viral video. We focus on understanding your core message to write narratives that resonate.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {["Promotional Videos", "Explainer Scripts", "Ad Copywriting", "Storyboarding"].map(item => (
+              <div class="flex items-center space-x-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                <i class="ri-checkbox-circle-fill text-primary"></i>
+                <span class="font-bold text-gray-700 text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="bg-primary/5 p-10 rounded-[3rem] border border-primary/10 text-center">
+          <i class="ri-double-quotes-l text-5xl text-primary/20 mb-6 block"></i>
+          <p class="text-2xl font-black text-gray-800 leading-tight italic">
+            "Words have the power to transform a brand's vision into a movement."
+          </p>
+        </div>
+      </div>
+
+      <div class="max-w-5xl mx-auto bg-gray-50 rounded-[3rem] p-8 md:p-16 border border-gray-100">
+        <div class="text-center mb-12">
+          <h3 class="text-2xl md:text-4xl font-black text-gray-900 mb-2">Featured Sample</h3>
+          <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Moringa Benefits Script</p>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row gap-12 items-start">
+          <div class="w-full lg:w-[350px] aspect-[9/16] bg-gray-900 rounded-[2rem] overflow-hidden shadow-2xl flex-shrink-0">
+            <video controls class="w-full h-full object-cover">
+              <source src="/assets/input_file_2.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="flex-grow w-full">
+            <div class="h-[500px] overflow-y-auto bg-white p-8 md:p-12 rounded-[2rem] border border-gray-100 shadow-sm custom-scrollbar">
+              <pre class="whitespace-pre-wrap font-sans text-gray-600 leading-relaxed text-sm md:text-base">
+Moringa leaves
+Nuvvu oka 30 days e moringa leaves thiskunte em avudhdho nik telsa…
+Moringa leaves ante monagaku….
+Edhi thiskunna first week nundi ni constipation thaggudhdhi..
+Immunity perugudhdhi…blood lo sugar percentage kuda thaggudhdhi..
+2nd week nundi ni skin lo aging thaggudhdhi, joint pains pothayi and memory kuda improve avudhdhi..
+3rd week ki ni cholesterol levels ni reduce cheyyaniki try chesthadhi…dhini valla heart attack risk thaggudhdhi…
+Last week  ki dhini metabolism boosting weight ni manage chesthadhi
+Vitamin d inka calcium ni bones ni strong chesthadhi..
+Total ga overall health adhiri podhdhi…
+Dhinni oka diet lekunda thinte diarrhea ochhce chance undhi…
+So dhinni yela vaadali yeppudu vaadali ani detailed ga oka pdf chesa..
+Kina moringa ani comment cheyyi pdf send chestha….
+Mi family ki kachchithanga share cheyyi yevariko okallaki use avudhdhi…
+Do follow mencyclopedia…..BYE</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 10px;
+    }
+  </style>
+</BaseLayout>

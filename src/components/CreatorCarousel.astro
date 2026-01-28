@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+const creators = (await getCollection('creators')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="creators" class="py-24 bg-white dark:bg-gray-950 overflow-hidden transition-colors duration-500">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <h2 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-4">Meet Our Creators</h2>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The talented team behind our exceptional creative services.</p>
+    </div>
+    
+    <div class="relative group">
+      <!-- Navigation Buttons -->
+      <button id="prev-creator" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 w-12 h-12 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-full shadow-xl flex items-center justify-center text-gray-800 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-0 cursor-pointer">
+        <i class="ri-arrow-left-line text-xl"></i>
+      </button>
+      
+      <button id="next-creator" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 w-12 h-12 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-full shadow-xl flex items-center justify-center text-gray-800 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-0 cursor-pointer">
+        <i class="ri-arrow-right-line text-xl"></i>
+      </button>
+
+      <!-- Slider Track -->
+      <div id="creators-track" class="flex gap-6 overflow-x-auto pb-12 snap-x snap-mandatory scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+        {creators.map((creator, index) => (
+          <div class="min-w-[260px] md:min-w-[300px] snap-center bg-white dark:bg-gray-900 shadow-sm rounded-[2rem] overflow-hidden creator-card tilt-card border border-gray-100 dark:border-gray-800 hover:shadow-2xl transition-all duration-500 flex flex-col" data-aos="fade-up" data-aos-delay={index * 100}>
+            <div class="h-64 md:h-72 overflow-hidden relative group/image">
+              <div class="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover/image:opacity-100 transition-opacity duration-500 z-10"></div>
+              <Image 
+                src={creator.data.image} 
+                alt={creator.data.name} 
+                width={400} 
+                height={400} 
+                class="w-full h-full object-cover object-top transform group-hover/image:scale-110 transition-transform duration-700"
+              />
+            </div>
+            <div class="p-6 md:p-8 flex-grow bg-white dark:bg-gray-900 relative z-20">
+              <h3 class="text-lg md:text-xl font-black text-gray-900 dark:text-white">{creator.data.name}</h3>
+              <p class="text-primary font-bold mb-3 text-[9px] md:text-[10px] uppercase tracking-[0.2em]">{creator.data.role}</p>
+              <p class="text-gray-500 dark:text-gray-400 italic leading-relaxed text-xs md:text-sm font-medium">"{creator.data.quote}"</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  #creators-track::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+  function initCreatorCarousel() {
+    const track = document.getElementById('creators-track');
+    const prevBtn = document.getElementById('prev-creator');
+    const nextBtn = document.getElementById('next-creator');
+
+    if (!track || !prevBtn || !nextBtn) return;
+
+    // Updated scroll amount to match new card width + gap
+    const updateScrollAmount = () => {
+      const card = track.querySelector('.creator-card');
+      return card ? card.offsetWidth + 24 : 300 + 24; // card width + gap (6*4px=24px)
+    };
+
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -updateScrollAmount(), behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: updateScrollAmount(), behavior: 'smooth' });
+    });
+
+    // Optional: Hide buttons if at start/end
+    const updateButtons = () => {
+      const isStart = track.scrollLeft <= 10;
+      const isEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
+      
+      // We can style disabled state or hide them
+      prevBtn.style.opacity = isStart ? '0' : '';
+      prevBtn.style.pointerEvents = isStart ? 'none' : 'auto';
+      
+      nextBtn.style.opacity = isEnd ? '0' : '';
+      nextBtn.style.pointerEvents = isEnd ? 'none' : 'auto';
+    };
+
+    track.addEventListener('scroll', updateButtons);
+    // Initial check
+    // We use a small timeout to ensure layout is done
+    setTimeout(updateButtons, 100);
+  }
+
+  document.addEventListener('astro:page-load', initCreatorCarousel);
+</script>

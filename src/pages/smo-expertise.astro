@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+---
+
+<BaseLayout title="SMO Expertise | RY Services">
+  <ServiceHero 
+    badge="Visibility Driven"
+    title="SMO Expertise Services"
+    subtitle="Algorithmic optimization techniques designed to boost organic reach and profile authority."
+  />
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Technical Reach</h2>
+          <p class="text-lg text-gray-600 leading-relaxed font-medium mb-8">
+            We optimize your profiles from the ground up, utilizing platform-specific features to ensure your content is favored by the algorithms.
+          </p>
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-black flex-shrink-0">01</div>
+              <div>
+                <h4 class="font-bold text-gray-900">Profile Audits</h4>
+                <p class="text-gray-500 text-sm">Keyword optimization and branding consistency across Instagram & LinkedIn.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-black flex-shrink-0">02</div>
+              <div>
+                <h4 class="font-bold text-gray-900">Engagement Strategy</h4>
+                <p class="text-gray-500 text-sm">Implementing interactive loops (polls, Q&As) to trigger higher reach scores.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 rounded-[3rem] p-10 border border-gray-100">
+          <h3 class="text-2xl font-black mb-8 text-gray-900">Visibility Optimization</h3>
+          <div class="space-y-4">
+            {["SEO Optimized Bios", "Hashtag Clustering", "Feature Adoption (Reels/Polls)", "Cross-Platform Sync"].map(item => (
+              <div class="flex items-center space-x-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                <i class="ri-rocket-fill text-orange-500"></i>
+                <span class="font-bold text-gray-700 text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-950 rounded-[3rem] p-12 md:p-20 text-white reveal-text overflow-hidden relative shadow-2xl">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full -mr-48 -mt-48"></div>
+        <h3 class="text-2xl md:text-4xl font-black mb-10 relative z-10">Optimization Focus</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+          <div class="p-8 border border-white/10 rounded-2xl bg-white/5 hover:border-orange-500/30 transition-colors">
+            <h4 class="text-lg font-bold text-orange-500 mb-2">Profile Mastery</h4>
+            <p class="text-gray-400 text-sm">Ensuring every profile element is fine-tuned for the latest algorithm updates.</p>
+          </div>
+          <div class="p-8 border border-white/10 rounded-2xl bg-white/5 hover:border-orange-500/30 transition-colors">
+            <h4 class="text-lg font-bold text-orange-500 mb-2">Algorithm Pacing</h4>
+            <p class="text-gray-400 text-sm">Timing content releases to align with peak audience activity and engagement windows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

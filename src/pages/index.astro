@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import Process from '../components/Process.astro';
+import Marquee from '../components/Marquee.astro';
+import Roadmap from '../components/Roadmap.astro';
+import CreatorCarousel from '../components/CreatorCarousel.astro';
+import FAQ from '../components/FAQ.astro';
+import { getCollection } from 'astro:content';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="RY Services | Future of Digital Creativity">
+  <Hero />
+  <Stats />
+  <Marquee />
+
+  <!-- Bento Grid Services -->
+  <section id="services" class="py-32 bg-white dark:bg-gray-950 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-24">
+        <div class="inline-block px-4 py-1.5 bg-gray-50 dark:bg-gray-900 text-gray-400 rounded-full text-[9px] font-black tracking-[0.2em] uppercase mb-8" data-aos="fade-right">
+          Our Capabilities
+        </div>
+        <h2 class="text-5xl md:text-7xl font-black mb-10 tracking-tighter reveal-text leading-[0.9] text-gray-900 dark:text-white transition-colors" data-aos="fade-up" data-aos-delay="100">
+          Crafting the <span class="text-primary">Next Generation</span> of Brands.
+        </h2>
+        <p class="text-xl text-gray-500 dark:text-gray-400 leading-relaxed reveal-text font-medium max-w-2xl transition-colors" data-aos="fade-up" data-aos-delay="200">
+          Our specialized creative studio provides elite services to help founders scale their vision into global reality.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+        <div class="md:col-span-3 h-full"><ServiceCard {...services[0].data} /></div>
+        <div class="md:col-span-3 h-full"><ServiceCard {...services[1].data} /></div>
+        
+        <div class="md:col-span-2 h-full"><ServiceCard {...services[2].data} /></div>
+        <div class="md:col-span-2 h-full"><ServiceCard {...services[3].data} /></div>
+        <div class="md:col-span-2 h-full"><ServiceCard {...services[4].data} /></div>
+
+        <div class="md:col-span-3 h-full"><ServiceCard {...services[5].data} /></div>
+        <div class="md:col-span-3 h-full"><ServiceCard {...services[6].data} /></div>
+      </div>
+    </div>
+  </section>
+
+  <Process />
+  <Roadmap />
+  <CreatorCarousel />
+  <FAQ />
+
+  <section id="contact" class="py-32 bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100 dark:border-gray-800 transition-colors duration-500" data-aos="zoom-in">
+        <div class="md:w-1/2 bg-gray-900 dark:bg-gray-950 p-12 text-white flex flex-col justify-center relative overflow-hidden">
+          <h2 class="text-3xl font-black mb-6">Contact Us.</h2>
+          <p class="text-gray-400 mb-8 text-lg">Have a project in mind or just want to say hi? We'd love to hear from you.</p>
+          <div class="space-y-6">
+            <div class="flex items-center space-x-4 group">
+              <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <i class="ri-mail-line text-xl text-primary"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Email Us</p>
+                <p class="font-bold">hello@foxepro.com</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4 group">
+              <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <i class="ri-phone-line text-xl text-primary"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Call Us</p>
+                <p class="font-bold">+91 6309067564</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4 group">
+              <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <i class="ri-map-pin-line text-xl text-primary"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Visit Us</p>
+                <p class="font-bold">Hyderabad, India</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="md:w-1/2 p-12 relative bg-white dark:bg-gray-900 transition-colors duration-500" id="contact-form-container">
+          <!-- ⚠️ WARNING: You must replace 'YOUR_FORM_ID' with your actual Formspree form ID for this to work! -->
+          <form class="space-y-6" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <!-- Replace "https://formspree.io/f/YOUR_FORM_ID" with your actual Formspree endpoint or similar service -->
+            <div class="space-y-4">
+              <input type="text" name="name" required placeholder="Your Name" class="w-full px-6 py-4 bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-primary/10 transition-all outline-none">
+              <input type="email" name="email" required placeholder="Your Email" class="w-full px-6 py-4 bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-primary/10 transition-all outline-none">
+              <textarea name="message" required placeholder="Your Message" rows="4" class="w-full px-6 py-4 bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-none"></textarea>
+            </div>
+            <button type="submit" class="magnetic-btn w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-primary/25 uppercase tracking-widest text-[10px]">
+              Send Message
+            </button>
+          </form>
+
+          <!-- Success State (Hidden by default) -->
+          <div id="contact-success" class="absolute inset-0 bg-white dark:bg-gray-900 flex flex-col items-center justify-center p-12 text-center opacity-0 pointer-events-none transition-opacity duration-500">
+            <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-xl">
+              <i class="ri-checkbox-circle-line text-4xl"></i>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">Message Sent!</h3>
+            <p class="text-gray-500 font-medium">Thank you for reaching out. We'll get back to you as soon as possible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    function initHomePage() {
+      // Contact Form Logic - Optional: You can keep this for AJAX submission if preferred, 
+      // but standard form submission works with the action attribute above.
+      // If using Formspree's AJAX, you'd fetch() here.
+      // For now, we'll let the form submit normally so the user sees the redirection (or you can use Formspree's AJAX example).
+      
+      // Example of basic AJAX handling if you want to stay on page:
+      /*
+      if (form) {
+        form.onsubmit = async (e) => {
+          e.preventDefault();
+          const formData = new FormData(form);
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: { 'Accept': 'application/json' }
+            });
+            if (response.ok) {
+              const success = document.getElementById('contact-success');
+              if (success) {
+                form.style.opacity = '0';
+                form.style.pointerEvents = 'none';
+                success.classList.remove('opacity-0', 'pointer-events-none');
+                success.classList.add('opacity-100');
+              }
+            } else {
+              alert('Oops! There was a problem submitting your form');
+            }
+          } catch (error) {
+            alert('Oops! There was a problem submitting your form');
+          }
+        };
+      }
+      */
+    }
+
+    document.addEventListener('astro:page-load', initHomePage);
+  </script>
+</BaseLayout>

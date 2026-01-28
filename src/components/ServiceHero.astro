@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  badge: string;
+}
+
+const { title, subtitle, badge } = Astro.props;
+---
+
+<section class="pt-32 pb-16 md:pt-48 md:pb-24 relative overflow-hidden bg-gradient-to-br from-blue-50 to-white border-b border-gray-100">
+  <!-- Subtle background decoration -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full z-0 opacity-30 pointer-events-none">
+    <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-secondary/20 blur-[120px] rounded-full"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="max-w-4xl">
+      <div class="inline-block px-4 py-1.5 bg-primary text-white rounded-full text-[10px] font-black tracking-widest uppercase mb-8 shadow-lg shadow-primary/20">
+        {badge}
+      </div>
+      <h1 class="text-4xl md:text-7xl font-black text-gray-900 mb-8 leading-tight tracking-tight reveal-hero-text">
+        {title}
+      </h1>
+      <p class="text-lg md:text-2xl text-gray-600 leading-relaxed font-medium max-w-2xl reveal-hero-text opacity-0">
+        {subtitle}
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initServiceHero() {
+    gsap.to(".reveal-hero-text", {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power4.out",
+      stagger: 0.1,
+      startAt: { y: 30, opacity: 0 }
+    });
+  }
+  document.addEventListener('astro:page-load', initServiceHero);
+</script>

@@ -1,0 +1,78 @@
+---
+const milestones = [
+  {
+    title: "Beta Launch",
+    description: "Finalizing our core team of elite creators and opening early access for select startup partners.",
+    status: "active"
+  },
+  {
+    title: "Global Suite Rollout",
+    description: "Opening our full range of Script Writing, Video Editing, and Graphic Design services to the public.",
+    status: "upcoming"
+  },
+  {
+    title: "Creative Tech Integration",
+    description: "Launching our proprietary client dashboard for seamless project tracking and asset management.",
+    status: "upcoming"
+  },
+  {
+    title: "Expansion",
+    description: "Scaling our team to include 3D Motion Design and Full-Stack Development expertise.",
+    status: "upcoming"
+  }
+];
+---
+
+<section id="roadmap" class="py-24 bg-gray-950 text-white overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl md:text-5xl font-bold mb-6">Our Roadmap</h2>
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto">The journey to redefining digital creativity. Follow our progress as we build the future of brand amplification.</p>
+    </div>
+
+    <div class="relative">
+      <!-- Vertical Line -->
+      <div class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/50 via-gray-800 to-transparent -translate-x-1/2 hidden md:block"></div>
+
+      <div class="space-y-12 md:space-y-16">
+        {milestones.map((milestone, index) => (
+          <div class={`relative flex flex-col md:flex-row items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+            <!-- Dot -->
+            <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary shadow-[0_0_15px_rgba(59,130,246,0.5)] z-10 hidden md:block"></div>
+            
+            <div class="w-full md:w-1/2 p-4 md:p-6">
+              <div class={`p-6 md:p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-primary/50 transition-colors group ${index % 2 !== 0 ? 'md:text-right' : ''}`}>
+                <h3 class="text-xl md:text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{milestone.title}</h3>
+                <p class="text-gray-400 leading-relaxed text-base md:text-lg">{milestone.description}</p>
+              </div>
+            </div>
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initRoadmapAnimations() {
+    gsap.from("#roadmap .group", {
+      scrollTrigger: { 
+        trigger: "#roadmap", 
+        start: "top 80%",
+        once: true
+      },
+      x: (i) => i % 2 === 0 ? -100 : 100,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.3,
+      ease: "power2.out"
+    });
+  }
+  document.addEventListener('astro:page-load', initRoadmapAnimations);
+</script>

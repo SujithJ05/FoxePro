@@ -1,0 +1,452 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import SEO from '../components/SEO.astro';
+import Schema from '../components/Schema.astro';
+import 'remixicon/fonts/remixicon.css';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<SEO title={title} description={description} />
+		<Schema />
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Pacifico&display=swap" rel="stylesheet">
+		
+		<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    
+    <script>
+      // Dark Mode Init - Keep this inline to prevent FOUC
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+
+		<ClientRouter />
+
+		<style is:global>
+			:where([class^="ri-"])::before { content: "\f3c2"; }
+			html { scroll-behavior: smooth; }
+			body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+			.grain {
+				position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+				background: transparent url('/assets/noise-transparent.png') repeat;
+				animation: grain 8s steps(10) infinite; opacity: 0.12; pointer-events: none; z-index: 9999;
+			}
+			@keyframes grain {
+				0%, 100% { transform:translate(0, 0); }
+				10% { transform:translate(-5%, -10%); }
+				50% { transform:translate(-15%, 10%); }
+			}
+
+			#shutter {
+				position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+				background: #000; transform: translateY(100%); z-index: 100000; pointer-events: none;
+			}
+
+			.glass-header {
+				transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+				border-bottom: 1px solid transparent;
+			}
+			.header-scrolled {
+				background: rgba(255, 255, 255, 0.8);
+				backdrop-filter: blur(20px);
+				padding-top: 0.25rem; padding-bottom: 0.25rem;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+			}
+      :global(.dark) .header-scrolled {
+        background: rgba(17, 24, 39, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      .tilt-card {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .parallax-wrap {
+        overflow: hidden;
+      }
+      .parallax-img {
+        will-change: transform;
+        transform: scale(1.2);
+      }
+
+      .word-hidden {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .magnetic-btn {
+        will-change: transform;
+      }
+		</style>
+	</head>
+	<body class="bg-white text-gray-800 antialiased dark:bg-gray-950 dark:text-gray-100 transition-colors duration-500">
+		<div id="shutter"></div>
+		<div class="grain"></div>
+
+		<header id="main-header" class="fixed w-full z-50 transition-all duration-500">
+			<nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto transition-all">
+				<div class="w-1/4">
+					<a href="/#home" class="inline-block transition-transform hover:scale-105">
+            <img src="/assets/FoxePro_Logo.jpeg" alt="FoxePro" class="h-10 w-auto rounded-xl">
+					</a>
+				</div>
+				<div class="hidden md:flex w-2/4 justify-center space-x-12">
+					<a href="/#home" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Home</a>
+					<a href="/#services" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Services</a>
+					<a href="/#process" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Process</a>
+					<a href="/#creators" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Team</a>
+				</div>
+				<div class="w-1/4 flex justify-end items-center gap-4">
+          <!-- Dark Mode Toggle -->
+          <button id="theme-toggle" aria-label="Toggle Dark Mode" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-yellow-400 transition-colors hover:scale-110 active:scale-95 duration-200">
+            <i class="ri-moon-line dark:hidden text-xl"></i>
+            <i class="ri-sun-line hidden dark:block text-xl"></i>
+          </button>
+
+					<a href="/#contact" class="hidden md:inline-block magnetic-btn bg-primary text-white px-8 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:shadow-2xl hover:shadow-primary/40 transition-all">
+						Contact Us
+					</a>
+          <!-- Hamburger Button -->
+          <button id="menu-btn" aria-label="Toggle Menu" aria-expanded="false" class="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 z-50 relative group">
+            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:rotate-45 group-[.active]:translate-y-2"></span>
+            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:opacity-0"></span>
+            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:-rotate-45 group-[.active]:-translate-y-2"></span>
+          </button>
+				</div>
+			</nav>
+      
+      <!-- Mobile Menu Overlay -->
+      <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-gray-900 z-40 translate-x-full transition-transform duration-500 md:hidden flex flex-col justify-center items-center">
+        <nav class="flex flex-col items-center space-y-8">
+          <a href="/#home" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Home</a>
+          <a href="/#services" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Services</a>
+          <a href="/#process" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Process</a>
+          <a href="/#creators" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Team</a>
+          <a href="/#contact" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Contact</a>
+        </nav>
+      </div>
+		</header>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-top" aria-label="Scroll to top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center opacity-0 translate-y-10 transition-all duration-300 z-40 hover:scale-110 pointer-events-none">
+      <i class="ri-arrow-up-line text-xl"></i>
+    </button>
+
+		<slot />
+
+		<footer class="bg-gray-950 text-white pt-32 pb-12 border-t border-white/5 relative overflow-hidden">
+      <canvas id="footer-3d-background" class="absolute inset-0 z-0 opacity-20"></canvas>
+      
+			<div class="max-w-7xl mx-auto px-8 relative z-10">
+				<div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
+					<div class="col-span-1 md:col-span-1">
+						<a href="/#home" class="inline-block mb-8">
+              <img src="/assets/FoxePro_Logo.jpeg" alt="FoxePro" class="h-12 w-auto rounded-xl grayscale brightness-200">
+						</a>
+						<p class="text-gray-500 text-sm leading-relaxed font-medium">Crafting the visual future of modern brands with elite creative expertise.</p>
+					</div>
+          
+          <div>
+            <h4 class="font-black text-[10px] uppercase tracking-[0.2em] text-white mb-8">Agency</h4>
+            <ul class="space-y-4 text-sm text-gray-500 font-medium">
+              <li><a href="/#home" class="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="/#process" class="hover:text-primary transition-colors">Our Process</a></li>
+              <li><a href="/#creators" class="hover:text-primary transition-colors">Our Team</a></li>
+              <li><a href="/#contact" class="hover:text-primary transition-colors">Careers</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-black text-[10px] uppercase tracking-[0.2em] text-white mb-8">Services</h4>
+            <ul class="space-y-4 text-sm text-gray-500 font-medium">
+              <li><a href="/video-editing" class="hover:text-primary transition-colors">Video Editing</a></li>
+              <li><a href="/graphic-designing" class="hover:text-primary transition-colors">Graphic Design</a></li>
+              <li><a href="/script-writing" class="hover:text-primary transition-colors">Script Writing</a></li>
+              <li><a href="/website-designing" class="hover:text-primary transition-colors">Web Design</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-black text-[10px] uppercase tracking-[0.2em] text-white mb-8">Contact</h4>
+            <ul class="space-y-4 text-sm text-gray-500 font-medium">
+              <li class="flex items-center gap-3"><i class="ri-phone-line text-primary"></i> +91 6309067564</li>
+              <li class="flex items-center gap-3"><i class="ri-map-pin-line text-primary"></i> Hyderabad, India</li>
+            </ul>
+          </div>
+				</div>
+
+        <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <p class="text-gray-600 font-bold uppercase tracking-widest text-[10px]">© 2026 FoxePro. All rights reserved.</p>
+          <!-- Removed Privacy Policy and Terms of Service links -->
+        </div>
+			</div>
+		</footer>
+
+		<script>
+      import * as THREE from 'three';
+      import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      function initThemeToggle() {
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (!toggleBtn) return;
+
+        toggleBtn.addEventListener('click', () => {
+          if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+          } else {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+          }
+        });
+      }
+
+			function initHeader() {
+				const header = document.getElementById('main-header');
+				if (!header) return;
+				const nav = header.querySelector('nav');
+				window.addEventListener('scroll', () => {
+					if (window.scrollY > 50) {
+						header.classList.add('header-scrolled');
+						nav.classList.remove('py-6'); nav.classList.add('py-4');
+					} else {
+						header.classList.remove('header-scrolled');
+						nav.classList.remove('py-4'); nav.classList.add('py-6');
+					}
+				});
+			}
+
+      function initMobileMenu() {
+        const btn = document.getElementById('menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const links = document.querySelectorAll('.mobile-link');
+
+        if (!btn || !menu) return;
+
+        const toggleMenu = () => {
+          const isActive = btn.classList.toggle('active');
+          btn.setAttribute('aria-expanded', isActive);
+          if (menu.classList.contains('translate-x-full')) {
+            menu.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+          } else {
+            menu.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+          }
+        };
+
+        btn.onclick = toggleMenu;
+        links.forEach(link => {
+          link.onclick = toggleMenu;
+        });
+      }
+
+      function initScrollTop() {
+        const btn = document.getElementById('scroll-top');
+        if (!btn) return;
+
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 500) {
+            btn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+            btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+          } else {
+            btn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+            btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+          }
+        });
+
+        btn.onclick = () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+      }
+
+      function initMagneticButtons() {
+        const btns = document.querySelectorAll('.magnetic-btn, .magnetic-link');
+        btns.forEach(btn => {
+          btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const strength = btn.classList.contains('magnetic-link') ? 0.5 : 0.3;
+            gsap.to(btn, {
+              duration: 0.3,
+              x: x * strength,
+              y: y * strength,
+              ease: "power2.out"
+            });
+          });
+          btn.addEventListener('mouseleave', () => {
+            gsap.to(btn, { duration: 0.3, x: 0, y: 0, ease: "power2.out" });
+          });
+        });
+      }
+
+			function initTilt() {
+				const cards = document.querySelectorAll('.tilt-card');
+				cards.forEach(card => {
+          const onMove = (e) => {
+						const rect = card.getBoundingClientRect();
+						const x = e.clientX - rect.left;
+						const y = e.clientY - rect.top;
+						const xc = rect.width / 2;
+						const yc = rect.height / 2;
+						const dx = x - xc;
+						const dy = y - yc;
+						gsap.to(card, {
+							duration: 0.5,
+							rotationY: dx / 30,
+							rotationX: -dy / 30,
+							ease: "power2.out"
+						});
+					};
+          const onLeave = () => {
+						gsap.to(card, { duration: 0.5, rotationY: 0, rotationX: 0, ease: "power2.out" });
+					};
+          card.addEventListener('mousemove', onMove);
+          card.addEventListener('mouseleave', onLeave);
+				});
+			}
+
+      function initParallax() {
+        const items = document.querySelectorAll('.parallax-wrap');
+        items.forEach(item => {
+          const img = item.querySelector('.parallax-img');
+          if (!img) return;
+          gsap.to(img, {
+            scrollTrigger: {
+              trigger: item,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            },
+            y: "15%",
+            ease: "none"
+          });
+        });
+      }
+
+      function initFooter3D() {
+        // Optimization: Disable on mobile/tablet or reduce complexity
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) return; // Disable entirely on mobile for performance
+
+        const canvas = document.getElementById('footer-3d-background');
+        if (!canvas) return;
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 400, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, 400);
+        
+        const group = new THREE.Group();
+        const geometry = new THREE.IcosahedronGeometry(1, 0);
+        const material = new THREE.MeshPhongMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.1, wireframe: true });
+        
+        const count = 5; // Reduced from potentially more if needed
+        for(let i=0; i<count; i++) {
+          const mesh = new THREE.Mesh(geometry, material);
+          mesh.position.set((Math.random()-0.5)*15, (Math.random()-0.5)*5, -5);
+          mesh.rotation.set(Math.random(), Math.random(), Math.random());
+          group.add(mesh);
+        }
+        scene.add(group);
+        scene.add(new THREE.AmbientLight(0xffffff, 1));
+        
+        const animate = () => {
+          requestAnimationFrame(animate);
+          group.rotation.y += 0.001;
+          group.children.forEach(m => m.rotation.x += 0.002);
+          renderer.render(scene, camera);
+        };
+        animate();
+      }
+
+			      function initNavigation() {
+							document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((anchor) => {
+								anchor.onclick = (e) => {
+									const href = anchor.getAttribute("href");
+									const targetId = href.includes('#') ? '#' + href.split('#')[1] : null;
+									if (targetId) {
+										const targetElement = document.querySelector(targetId);
+										if (targetElement) {
+											e.preventDefault();
+											window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
+										}
+									}
+								};
+							});
+						}
+			
+			      function initScrollAnimations() {
+			        const elements = document.querySelectorAll('[data-aos]');
+			        elements.forEach(el => {
+			          const effect = el.dataset.aos || 'fade-up';
+			          const delay = el.dataset.aosDelay || 0;
+			          
+			          let fromVars = { autoAlpha: 0, y: 50 };
+			          if (effect === 'fade-in') fromVars = { autoAlpha: 0, y: 0 };
+			          if (effect === 'fade-left') fromVars = { autoAlpha: 0, x: 50 };
+			          if (effect === 'fade-right') fromVars = { autoAlpha: 0, x: -50 };
+			          if (effect === 'zoom-in') fromVars = { autoAlpha: 0, scale: 0.9 };
+			
+			          gsap.fromTo(el, 
+			            fromVars,
+			            {
+			              scrollTrigger: {
+			                trigger: el,
+			                start: "top 85%",
+			                toggleActions: "play none none none",
+			                once: true
+			              },
+			              autoAlpha: 1,
+			              x: 0,
+			              y: 0,
+			              scale: 1,
+			              duration: 0.8,
+			              delay: delay / 1000,
+			              ease: "power3.out"
+			            }
+			          );
+			        });
+			      }
+			
+						document.addEventListener('astro:page-load', () => {
+              initThemeToggle();
+							initHeader();
+              initMobileMenu();
+              initScrollTop();
+							initTilt();
+			        initParallax();
+			        initFooter3D();
+							initNavigation();
+			        initMagneticButtons();
+			        initScrollAnimations();
+						});
+			document.addEventListener('astro:before-preparation', () => {
+				gsap.to('#shutter', { duration: 0.6, y: '0%', ease: "power4.inOut" });
+			});
+			document.addEventListener('astro:after-preparation', () => {
+				gsap.to('#shutter', { duration: 0.6, y: '-100%', ease: "power4.inOut", delay: 0.2 });
+			});
+		</script>
+	</body>
+</html>

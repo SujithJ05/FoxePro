@@ -1,0 +1,9 @@
+{
+  "title": "Website Designing",
+  "description": "Custom website designs that are not only visually appealing but also functional, responsive, and user-friendly.",
+  "icon": "ri-code-line",
+  "href": "/website-designing",
+  "colorClass": "bg-indigo-50",
+  "iconColor": "text-indigo-600",
+  "order": 4
+}

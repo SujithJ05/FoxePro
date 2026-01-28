@@ -1,0 +1,53 @@
+---
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "RY Services",
+  "image": "/assets/FoxePro_Logo.jpeg",
+  "@id": "",
+  "url": Astro.site ? Astro.site.href : "https://ry-services.com",
+  "telephone": "+91 6309067564",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "",
+    "addressLocality": "Hyderabad",
+    "addressRegion": "Telangana",
+    "postalCode": "",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 17.3850,
+    "longitude": 78.4867
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
+  "sameAs": [
+    "#",
+    "#",
+    "#"
+  ],
+  "founders": [
+    {
+      "@type": "Person",
+      "name": "Ramisetty RaghuRam"
+    },
+    {
+      "@type": "Person",
+      "name": "Sravan"
+    }
+  ]
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
