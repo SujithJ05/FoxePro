@@ -452,10 +452,11 @@ const { title, description } = Astro.props;
 
 			        if (!loader || !video) return;
 
-			        const isHome = window.location.pathname === '/FoxePro/' || window.location.pathname === '/FoxePro' || window.location.pathname === '/FoxePro/index.html';
+			        const path = window.location.pathname.replace(/\/$/, "");
+			        const isHome = path === '/FoxePro' || path === '/FoxePro/index.html' || path === '';
 			        
-              // Instant check: If seen or not home, destroy loader immediately
-              if (sessionStorage.getItem('foxepro-intro-seen') || !isHome) {
+              // Temporarily disabled the session check so you can verify it's working
+              if (!isHome) {
 			          loader.remove();
 			          return;
 			        }
