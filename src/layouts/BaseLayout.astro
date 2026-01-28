@@ -97,12 +97,19 @@ const { title, description } = Astro.props;
 		</style>
 	</head>
 	<body class="bg-white text-gray-800 antialiased dark:bg-gray-950 dark:text-gray-100 transition-colors duration-500">
-		<!-- Intro Video Loader -->
+		<!-- Professional Intro Video Loader -->
 		<div id="intro-loader" class="fixed inset-0 z-[200000] bg-black flex items-center justify-center overflow-hidden">
-			<video id="intro-video" class="w-full h-full object-cover" muted playsinline preload="auto">
+			<video 
+        id="intro-video" 
+        class="w-full h-full object-cover opacity-0 transition-opacity duration-1000" 
+        muted 
+        playsinline 
+        preload="auto"
+        poster="/FoxePro/assets/input_file_0.jpeg"
+      >
 				<source src="/FoxePro/assets/intro.mp4" type="video/mp4" />
 			</video>
-			<button id="skip-intro" class="absolute bottom-8 right-8 text-white/50 hover:text-white text-[10px] font-black uppercase tracking-[0.3em] transition-colors z-[200001] cursor-pointer">Skip Intro</button>
+			<button id="skip-intro" class="absolute bottom-8 right-8 text-white/40 hover:text-white text-[9px] font-black uppercase tracking-[0.4em] transition-all z-[200001] cursor-pointer bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">Skip Intro</button>
 		</div>
 
 		<div id="shutter"></div>
@@ -446,8 +453,10 @@ const { title, description } = Astro.props;
 			        if (!loader || !video) return;
 
 			        const isHome = window.location.pathname === '/FoxePro/' || window.location.pathname === '/FoxePro' || window.location.pathname === '/FoxePro/index.html';
-			        if (sessionStorage.getItem('foxepro-intro-seen') || !isHome) {
-			          loader.style.display = 'none';
+			        
+              // Instant check: If seen or not home, destroy loader immediately
+              if (sessionStorage.getItem('foxepro-intro-seen') || !isHome) {
+			          loader.remove();
 			          return;
 			        }
 
@@ -456,26 +465,33 @@ const { title, description } = Astro.props;
 			          if (introFinished) return;
 			          introFinished = true;
 			          sessionStorage.setItem('foxepro-intro-seen', 'true');
-			          gsap.to(loader, {
+			          
+                const tl = gsap.timeline();
+                tl.to(loader, {
 			            opacity: 0,
-			            duration: 1,
-			            scale: 1.05,
-			            ease: "power3.inOut",
+			            duration: 1.5,
+			            scale: 1.1,
+			            ease: "expo.inOut",
 			            onComplete: () => {
-			              loader.style.display = 'none';
+			              loader.remove();
 			            }
 			          });
 			        };
 
-			        // Safety timeout: If video doesn't play in 3 seconds, skip it
-			        const timeout = setTimeout(finishIntro, 3500);
+			        // Professional fade-in: Only show video when it's actually playing
+              video.onplaying = () => {
+                video.classList.remove('opacity-0');
+                video.classList.add('opacity-100');
+              };
 
-			        video.oncanplay = () => {
-			          video.play().catch(finishIntro);
-			        };
+			        // Safety timeout shortened: 4s is the max a user will wait for an intro
+			        const timeout = setTimeout(finishIntro, 4000);
 
 			        video.onended = finishIntro;
 			        if (skipBtn) skipBtn.onclick = finishIntro;
+
+              // Force play
+              video.play().catch(finishIntro);
 			      }
 			
 						document.addEventListener('astro:page-load', () => {
