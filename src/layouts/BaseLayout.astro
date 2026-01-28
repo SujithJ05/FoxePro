@@ -99,7 +99,7 @@ const { title, description } = Astro.props;
 	<body class="bg-white text-gray-800 antialiased dark:bg-gray-950 dark:text-gray-100 transition-colors duration-500">
 		<!-- Intro Video Loader -->
 		<div id="intro-loader" class="fixed inset-0 z-[200000] bg-black flex items-center justify-center overflow-hidden">
-			<video id="intro-video" class="w-full h-full object-cover" muted playsinline>
+			<video id="intro-video" class="w-full h-full object-cover" muted playsinline preload="auto">
 				<source src="/FoxePro/assets/intro.mp4" type="video/mp4" />
 			</video>
 			<button id="skip-intro" class="absolute bottom-8 right-8 text-white/50 hover:text-white text-[10px] font-black uppercase tracking-[0.3em] transition-colors z-[200001] cursor-pointer">Skip Intro</button>
@@ -440,38 +440,42 @@ const { title, description } = Astro.props;
 
 			      function initIntro() {
 			        const loader = document.getElementById('intro-loader');
-			        const video = document.getElementById('intro-video');
+			        const video = document.getElementById('intro-video') as HTMLVideoElement;
 			        const skipBtn = document.getElementById('skip-intro');
 
 			        if (!loader || !video) return;
 
-			        // Only play on home page or if specifically requested, and only once per session
-			        const isHome = window.location.pathname === '/FoxePro/' || window.location.pathname === '/FoxePro';
+			        const isHome = window.location.pathname === '/FoxePro/' || window.location.pathname === '/FoxePro' || window.location.pathname === '/FoxePro/index.html';
 			        if (sessionStorage.getItem('foxepro-intro-seen') || !isHome) {
 			          loader.style.display = 'none';
 			          return;
 			        }
 
+			        let introFinished = false;
 			        const finishIntro = () => {
+			          if (introFinished) return;
+			          introFinished = true;
 			          sessionStorage.setItem('foxepro-intro-seen', 'true');
 			          gsap.to(loader, {
 			            opacity: 0,
-			            duration: 1.2,
-			            scale: 1.1,
-			            ease: "power4.inOut",
+			            duration: 1,
+			            scale: 1.05,
+			            ease: "power3.inOut",
 			            onComplete: () => {
 			              loader.style.display = 'none';
 			            }
 			          });
 			        };
 
+			        // Safety timeout: If video doesn't play in 3 seconds, skip it
+			        const timeout = setTimeout(finishIntro, 3500);
+
+			        video.oncanplay = () => {
+			          video.play().catch(finishIntro);
+			        };
+
 			        video.onended = finishIntro;
 			        if (skipBtn) skipBtn.onclick = finishIntro;
-
-			        // Start video
-			        video.play().catch(() => {
-			          finishIntro();
-			        });
 			      }
 			
 						document.addEventListener('astro:page-load', () => {
