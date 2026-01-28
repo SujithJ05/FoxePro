@@ -36,14 +36,14 @@ const { title, description } = Astro.props;
 
 		<ClientRouter />
 
-		<style is:global>
+		<style is:global define:vars={{ noiseUrl: `url('${import.meta.env.BASE_URL}assets/noise-transparent.png')` }}>
 			:where([class^="ri-"])::before { content: "\f3c2"; }
 			html { scroll-behavior: smooth; }
 			body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
 			.grain {
 				position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-				background: transparent url('/FoxePro/assets/noise-transparent.png') repeat;
+				background: transparent var(--noiseUrl) repeat;
 				animation: grain 8s steps(10) infinite; opacity: 0.12; pointer-events: none; z-index: 9999;
 			}
 			@keyframes grain {
@@ -103,15 +103,15 @@ const { title, description } = Astro.props;
 		<header id="main-header" class="fixed w-full z-50 transition-all duration-500">
 			<nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto transition-all">
 				<div class="w-1/4">
-					<a href="/FoxePro/#home" class="inline-block transition-transform hover:scale-105">
-            <img src="/FoxePro/assets/FoxePro_Logo.jpeg" alt="FoxePro" class="h-10 w-auto rounded-xl">
+					<a href={`${import.meta.env.BASE_URL}#home`} class="inline-block transition-transform hover:scale-105">
+            <img src={`${import.meta.env.BASE_URL}assets/FoxePro_Logo.jpeg`} alt="FoxePro" class="h-10 w-auto rounded-xl">
 					</a>
 				</div>
 				<div class="hidden md:flex w-2/4 justify-center space-x-12">
-					<a href="/FoxePro/#home" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Home</a>
-					<a href="/FoxePro/#services" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Services</a>
-					<a href="/FoxePro/#process" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Process</a>
-					<a href="/FoxePro/#creators" class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Team</a>
+					<a href={`${import.meta.env.BASE_URL}#home`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Home</a>
+					<a href={`${import.meta.env.BASE_URL}#services`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Services</a>
+					<a href={`${import.meta.env.BASE_URL}#process`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Process</a>
+					<a href={`${import.meta.env.BASE_URL}#creators`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Team</a>
 				</div>
 				<div class="w-1/4 flex justify-end items-center gap-4">
           <!-- Dark Mode Toggle -->
@@ -120,7 +120,7 @@ const { title, description } = Astro.props;
             <i class="ri-sun-line hidden dark:block text-xl"></i>
           </button>
 
-					<a href="/FoxePro/#contact" class="hidden md:inline-block magnetic-btn bg-primary text-white px-8 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:shadow-2xl hover:shadow-primary/40 transition-all">
+					<a href={`${import.meta.env.BASE_URL}#contact`} class="hidden md:inline-block magnetic-btn bg-primary text-white px-8 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:shadow-2xl hover:shadow-primary/40 transition-all">
 						Contact Us
 					</a>
           <!-- Hamburger Button -->
@@ -135,11 +135,11 @@ const { title, description } = Astro.props;
       <!-- Mobile Menu Overlay -->
       <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-gray-900 z-40 translate-x-full transition-transform duration-500 md:hidden flex flex-col justify-center items-center">
         <nav class="flex flex-col items-center space-y-8">
-          <a href="/FoxePro/#home" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Home</a>
-          <a href="/FoxePro/#services" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Services</a>
-          <a href="/FoxePro/#process" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Process</a>
-          <a href="/FoxePro/#creators" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Team</a>
-          <a href="/FoxePro/#contact" class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Contact</a>
+          <a href={`${import.meta.env.BASE_URL}#home`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Home</a>
+          <a href={`${import.meta.env.BASE_URL}#services`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Services</a>
+          <a href={`${import.meta.env.BASE_URL}#process`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Process</a>
+          <a href={`${import.meta.env.BASE_URL}#creators`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Team</a>
+          <a href={`${import.meta.env.BASE_URL}#contact`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Contact</a>
         </nav>
       </div>
 		</header>
@@ -157,8 +157,8 @@ const { title, description } = Astro.props;
 			<div class="max-w-7xl mx-auto px-8 relative z-10">
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
 					<div class="col-span-1 md:col-span-1">
-						<a href="/FoxePro/#home" class="inline-block mb-8">
-              <img src="/FoxePro/assets/FoxePro_Logo.jpeg" alt="FoxePro" class="h-12 w-auto rounded-xl grayscale brightness-200">
+						<a href={`${import.meta.env.BASE_URL}#home`} class="inline-block mb-8">
+              <img src={`${import.meta.env.BASE_URL}assets/FoxePro_Logo.jpeg`} alt="FoxePro" class="h-12 w-auto rounded-xl grayscale brightness-200">
 						</a>
 						<p class="text-gray-500 text-sm leading-relaxed font-medium">Crafting the visual future of modern brands with elite creative expertise.</p>
 					</div>
@@ -166,20 +166,20 @@ const { title, description } = Astro.props;
           <div>
             <h4 class="font-black text-[10px] uppercase tracking-[0.2em] text-white mb-8">Agency</h4>
             <ul class="space-y-4 text-sm text-gray-500 font-medium">
-              <li><a href="/FoxePro/#home" class="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="/FoxePro/#process" class="hover:text-primary transition-colors">Our Process</a></li>
-              <li><a href="/FoxePro/#creators" class="hover:text-primary transition-colors">Our Team</a></li>
-              <li><a href="/FoxePro/#contact" class="hover:text-primary transition-colors">Careers</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#home`} class="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#process`} class="hover:text-primary transition-colors">Our Process</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#creators`} class="hover:text-primary transition-colors">Our Team</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#contact`} class="hover:text-primary transition-colors">Careers</a></li>
             </ul>
           </div>
 
           <div>
             <h4 class="font-black text-[10px] uppercase tracking-[0.2em] text-white mb-8">Services</h4>
             <ul class="space-y-4 text-sm text-gray-500 font-medium">
-              <li><a href="/FoxePro/video-editing" class="hover:text-primary transition-colors">Video Editing</a></li>
-              <li><a href="/FoxePro/graphic-designing" class="hover:text-primary transition-colors">Graphic Design</a></li>
-              <li><a href="/FoxePro/script-writing" class="hover:text-primary transition-colors">Script Writing</a></li>
-              <li><a href="/FoxePro/website-designing" class="hover:text-primary transition-colors">Web Design</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}video-editing`} class="hover:text-primary transition-colors">Video Editing</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}graphic-designing`} class="hover:text-primary transition-colors">Graphic Design</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}script-writing`} class="hover:text-primary transition-colors">Script Writing</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}website-designing`} class="hover:text-primary transition-colors">Web Design</a></li>
             </ul>
           </div>
 

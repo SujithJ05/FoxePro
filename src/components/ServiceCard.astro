@@ -27,7 +27,7 @@ const formattedOrder = order.toString().padStart(2, '0');
   <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-10 flex-grow font-medium">{description}</p>
   
   <div class="pt-8 border-t border-gray-50 dark:border-gray-800">
-    <a href={href} class="text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-widest flex items-center group-hover:gap-3 transition-all">
+    <a href={import.meta.env.BASE_URL + href.slice(1)} class="text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-widest flex items-center group-hover:gap-3 transition-all">
       Explore Case Study
       <i class="ri-arrow-right-up-line ml-2 text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
     </a>
