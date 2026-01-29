@@ -24,10 +24,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
 
       <div class="flex flex-col sm:flex-row justify-center items-center gap-6" data-aos="fade-up" data-aos-delay="200">
-        <a href="{import.meta.env.BASE_URL}" class="magnetic-btn bg-primary text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-700 transition-all shadow-xl shadow-primary/25 text-center w-full sm:w-auto">
+        <a href={import.meta.env.BASE_URL} class="magnetic-btn bg-primary text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-700 transition-all shadow-xl shadow-primary/25 text-center w-full sm:w-auto">
           Return Home
         </a>
-        <a href="{import.meta.env.BASE_URL}#contact" class="magnetic-btn bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-center w-full sm:w-auto">
+        <a href={`${import.meta.env.BASE_URL}#contact`} class="magnetic-btn bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-center w-full sm:w-auto">
           Contact Support
         </a>
       </div>

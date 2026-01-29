@@ -3,7 +3,7 @@ const schema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
     "name": "FoxePro",
-    "image": `${import.meta.env.BASE_URL}assets/FoxePro_Logo.jpeg`,
+    "image": `${import.meta.env.BASE_URL.replace(/\/$/, '')}/assets/FoxePro_Logo.jpeg`,
     "description": "Creative Services Agency specializing in Video Editing, Graphic Design, and Script Writing.",
   "@id": "",
       "url": Astro.site ? Astro.site.href : "https://fozepro.netlify.app/",  "telephone": "+91 6309067564",

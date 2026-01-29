@@ -2,10 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceHero from '../components/ServiceHero.astro';
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const videos = [
-  { src: "{import.meta.env.BASE_URL}assets/input_file_0.mp4", title: "Hair Care Tips", desc: "Dynamic text and graphic overlays." },
-  { src: "{import.meta.env.BASE_URL}assets/input_file_1.mp4", title: "Dark Circles", desc: "Educational content with motion graphics." },
-  { src: "{import.meta.env.BASE_URL}assets/input_file_2.mp4", title: "Moringa Supplement", desc: "Explainer video for herbal products." }
+  { src: `${base}/assets/input_file_0.mp4`, title: "Hair Care Tips", desc: "Dynamic text and graphic overlays." },
+  { src: `${base}/assets/input_file_1.mp4`, title: "Dark Circles", desc: "Educational content with motion graphics." },
+  { src: `${base}/assets/input_file_2.mp4`, title: "Moringa Supplement", desc: "Explainer video for herbal products." }
 ];
 ---
 
@@ -40,7 +41,7 @@ const videos = [
         </div>
         <div class="bg-gray-900 rounded-[2rem] aspect-video overflow-hidden shadow-2xl border-8 border-gray-100 flex items-center justify-center group relative">
           <video muted loop playsinline class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity">
-            <source src="{import.meta.env.BASE_URL}assets/input_file_0.mp4" type="video/mp4" />
+            <source src={`${base}/assets/input_file_0.mp4`} type="video/mp4" />
           </video>
           <div class="absolute inset-0 flex items-center justify-center">
             <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-gray-900 shadow-xl pointer-events-none">
@@ -91,15 +92,22 @@ const videos = [
 
     function initVideoPage() {
       const modal = document.getElementById("video-modal");
-      const modalVideo = document.getElementById("modal-video");
+      const modalVideo = document.getElementById("modal-video") as HTMLVideoElement;
       const closeBtn = document.getElementById("close-modal");
       const triggers = document.querySelectorAll(".video-trigger");
 
+      if (!modal || !modalVideo) return;
+
       triggers.forEach(t => {
-        t.onclick = () => {
-          modalVideo.src = t.dataset.videoSrc;
-          modal.classList.remove("hidden");
-          document.body.style.overflow = "hidden";
+        (t as HTMLElement).onclick = () => {
+          const src = (t as HTMLElement).dataset.videoSrc;
+          if (src) {
+            modalVideo.src = src;
+            modalVideo.load();
+            modalVideo.play().catch(e => console.error("Video play failed:", e));
+            modal.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+          }
         };
       });
 

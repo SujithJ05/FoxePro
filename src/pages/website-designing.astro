@@ -6,9 +6,10 @@ import { Image } from 'astro:assets';
 import imgSmart from '../assets/website_preview_smartshop.jpg';
 import imgPort from '../assets/website_preview_portfolio.jpg';
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const sites = [
-  { img: imgSmart, title: "SmartShop", desc: "A modern E-commerce experience with advanced filtering.", src: "/sample-sites/ecommerce-store/index.html" },
-  { img: imgPort, title: "Creative Agency", desc: "A sleek, motion-driven portfolio for visual creators.", src: "/sample-sites/creative-portfolio/index.html" }
+  { img: imgSmart, title: "SmartShop", desc: "A modern E-commerce experience with advanced filtering.", src: `${base}/sample-sites/ecommerce-store/index.html` },
+  { img: imgPort, title: "Creative Agency", desc: "A sleek, motion-driven portfolio for visual creators.", src: `${base}/sample-sites/creative-portfolio/index.html` }
 ];
 ---
 

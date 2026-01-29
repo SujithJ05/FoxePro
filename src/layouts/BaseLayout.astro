@@ -11,6 +11,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -36,7 +37,7 @@ const { title, description } = Astro.props;
 
 		<ClientRouter />
 
-		<style is:global define:vars={{ noiseUrl: `url('${import.meta.env.BASE_URL}assets/noise-transparent.png')` }}>
+		<style is:global define:vars={{ noiseUrl: `url('${base}/assets/noise-transparent.png')` }}>
 			:where([class^="ri-"])::before { content: "\f3c2"; }
 			html { scroll-behavior: smooth; }
 			body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -103,15 +104,15 @@ const { title, description } = Astro.props;
 		<header id="main-header" class="fixed w-full z-50 transition-all duration-500">
 			<nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto transition-all">
 				<div class="w-1/4">
-					<a href={`${import.meta.env.BASE_URL}#home`} class="inline-block transition-transform hover:scale-105">
-            <img src={`${import.meta.env.BASE_URL}assets/FoxePro_Logo.jpeg`} alt="FoxePro" class="h-10 w-auto rounded-xl">
+					<a href={`${base}/#home`} class="inline-block transition-transform hover:scale-105">
+            <img src={`${base}/assets/FoxePro_Logo.jpeg`} alt="FoxePro" class="h-10 w-auto rounded-xl">
 					</a>
 				</div>
 				<div class="hidden md:flex w-2/4 justify-center space-x-12">
-					<a href={`${import.meta.env.BASE_URL}#home`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Home</a>
-					<a href={`${import.meta.env.BASE_URL}#services`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Services</a>
-					<a href={`${import.meta.env.BASE_URL}#process`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Process</a>
-					<a href={`${import.meta.env.BASE_URL}#creators`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Team</a>
+					<a href={`${base}/#home`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Home</a>
+					<a href={`${base}/#services`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Services</a>
+					<a href={`${base}/#process`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Process</a>
+					<a href={`${base}/#creators`} class="magnetic-link font-bold text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-primary transition-colors dark:text-gray-400 dark:hover:text-primary">Team</a>
 				</div>
 				<div class="w-1/4 flex justify-end items-center gap-4">
           <!-- Dark Mode Toggle -->
@@ -157,8 +158,8 @@ const { title, description } = Astro.props;
 			<div class="max-w-7xl mx-auto px-8 relative z-10">
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
 					<div class="col-span-1 md:col-span-1">
-						<a href={`${import.meta.env.BASE_URL}#home`} class="inline-block mb-8">
-              <img src={`${import.meta.env.BASE_URL}assets/FoxePro_Logo.jpeg`} alt="FoxePro" class="h-12 w-auto rounded-xl grayscale brightness-200">
+						<a href={`${base}/#home`} class="inline-block mb-8">
+              <img src={`${base}/assets/FoxePro_Logo.jpeg`} alt="FoxePro" class="h-12 w-auto rounded-xl grayscale brightness-200">
 						</a>
 						<p class="text-gray-500 text-sm leading-relaxed font-medium">Crafting the visual future of modern brands with elite creative expertise.</p>
 					</div>
@@ -382,18 +383,20 @@ const { title, description } = Astro.props;
       }
 
 			      function initNavigation() {
-							document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((anchor) => {
-								anchor.onclick = (e) => {
-									const href = anchor.getAttribute("href");
-									const targetId = href.includes('#') ? '#' + href.split('#')[1] : null;
-									if (targetId) {
-										const targetElement = document.querySelector(targetId);
-										if (targetElement) {
-											e.preventDefault();
-											window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
+							document.querySelectorAll('a').forEach((anchor) => {
+								const href = anchor.getAttribute("href");
+								if (href && (href.includes('#') || href.includes('/#'))) {
+									anchor.onclick = (e) => {
+										const targetId = href.includes('#') ? '#' + href.split('#')[1] : null;
+										if (targetId) {
+											const targetElement = document.querySelector(targetId);
+											if (targetElement) {
+												e.preventDefault();
+												window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
+											}
 										}
-									}
-								};
+									};
+								}
 							});
 						}
 			

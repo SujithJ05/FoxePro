@@ -12,7 +12,7 @@ const { title, description, icon, href, iconColor, order } = Astro.props;
 const formattedOrder = order.toString().padStart(2, '0');
 ---
 
-<div class="service-card tilt-card group bg-white dark:bg-gray-900 p-10 rounded-[3rem] border border-gray-100 dark:border-gray-800 flex flex-col h-full hover:border-primary/20 dark:hover:border-primary/40 transition-all duration-500 shadow-sm hover:shadow-2xl overflow-hidden relative" data-aos="fade-up">
+<a href={import.meta.env.BASE_URL.replace(/\/$/, '') + href} class="service-card tilt-card group bg-white dark:bg-gray-900 p-10 rounded-[3rem] border border-gray-100 dark:border-gray-800 flex flex-col h-full hover:border-primary/20 dark:hover:border-primary/40 transition-all duration-500 shadow-sm hover:shadow-2xl overflow-hidden relative block" data-aos="fade-up">
   <div class="absolute top-8 right-10 text-[40px] font-black text-gray-50 dark:text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-700 select-none">
     {formattedOrder}
   </div>
@@ -27,9 +27,9 @@ const formattedOrder = order.toString().padStart(2, '0');
   <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-10 flex-grow font-medium">{description}</p>
   
   <div class="pt-8 border-t border-gray-50 dark:border-gray-800">
-    <a href={import.meta.env.BASE_URL + href.slice(1)} class="text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-widest flex items-center group-hover:gap-3 transition-all">
+    <div class="text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-widest flex items-center group-hover:gap-3 transition-all">
       Explore Case Study
       <i class="ri-arrow-right-up-line ml-2 text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-    </a>
+    </div>
   </div>
-</div>
+</a>

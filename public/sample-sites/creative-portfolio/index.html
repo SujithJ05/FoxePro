@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus | Creative Visionary Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #0a0a0a; }
+        .text-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
+        .hover-reveal { transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+    </style>
+</head>
+<body class="text-white selection:bg-white selection:text-black">
+    <!-- Smooth Navigation -->
+    <nav class="fixed w-full z-50 px-10 py-8 flex justify-between items-center mix-blend-difference">
+        <a href="#" class="text-2xl font-bold tracking-tighter">NEXUS.</a>
+        <div class="flex gap-12 text-[10px] uppercase tracking-[0.3em] font-bold">
+            <a href="#" class="hover:opacity-50 transition-opacity">Work</a>
+            <a href="#" class="hover:opacity-50 transition-opacity">Studio</a>
+            <a href="#" class="hover:opacity-50 transition-opacity">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center px-10 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 blur-[150px] rounded-full"></div>
+        
+        <div class="relative z-10">
+            <span class="inline-block text-[10px] uppercase tracking-[0.5em] mb-10 opacity-50">Global Design Partner</span>
+            <h1 class="text-[12vw] md:text-[10vw] font-bold leading-[0.85] tracking-tighter mb-10">
+                CRAFTING<br>
+                <span class="text-outline">DIGITAL</span><br>
+                POETRY.
+            </h1>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-10">
+                <p class="max-w-md text-xl opacity-60 font-light leading-relaxed">
+                    We bridge the gap between imagination and reality, creating digital experiences that resonate on a human level.
+                </p>
+                <div class="flex gap-4">
+                    <button class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500">
+                        <i class="ri-arrow-right-down-line text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Works -->
+    <section class="py-40 px-10">
+        <div class="flex justify-between items-end mb-20">
+            <h2 class="text-5xl font-bold tracking-tighter">SELECTED WORKS</h2>
+            <span class="text-[10px] uppercase tracking-widest opacity-50">01 — 04</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+            <!-- Project 1 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[4/5] overflow-hidden bg-zinc-900 mb-8 relative">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1964" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" alt="Project">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs">View Case Study</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">AETHER CLOUD</h3>
+                        <p class="opacity-50 text-sm uppercase tracking-widest">Brand Identity & Web Design</p>
+                    </div>
+                    <span class="text-sm opacity-30">2026</span>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="group cursor-pointer pt-20">
+                <div class="aspect-[4/5] overflow-hidden bg-zinc-900 mb-8 relative">
+                    <img src="https://images.unsplash.com/photo-1635405074683-96d6921a2a2c?auto=format&fit=crop&q=80&w=2070" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" alt="Project">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs">View Case Study</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">NEON OASIS</h3>
+                        <p class="opacity-50 text-sm uppercase tracking-widest">Art Direction & 3D Design</p>
+                    </div>
+                    <span class="text-sm opacity-30">2025</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-40 px-10 text-center relative overflow-hidden">
+        <div class="relative z-10">
+            <h2 class="text-[8vw] font-bold tracking-tighter leading-none mb-20">LET'S START THE<br>CONVERSATION.</h2>
+            <a href="mailto:hello@nexus.studio" class="text-3xl md:text-5xl font-bold hover:text-blue-500 transition-colors underline underline-offset-[20px] decoration-1">HELLO@NEXUS.STUDIO</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
+        <span class="text-[10px] uppercase tracking-widest opacity-30">© 2026 NEXUS STUDIO</span>
+        <div class="flex gap-10 text-[10px] uppercase tracking-widest opacity-50">
+            <a href="#" class="hover:text-white transition-colors">Behance</a>
+            <a href="#" class="hover:text-white transition-colors">Dribbble</a>
+            <a href="#" class="hover:text-white transition-colors">Instagram</a>
+        </div>
+        <span class="text-[10px] uppercase tracking-widest opacity-30">HYDERABAD, INDIA</span>
+    </footer>
+</body>
+</html>
