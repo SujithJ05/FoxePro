@@ -8,54 +8,79 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Space Grotesk', sans-serif; background-color: #0a0a0a; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #0a0a0a; overflow-x: hidden; }
         .text-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
         .hover-reveal { transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .mobile-menu-overlay { clip-path: circle(0% at 100% 0%); transition: clip-path 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .mobile-menu-overlay.active { clip-path: circle(150% at 100% 0%); }
     </style>
 </head>
 <body class="text-white selection:bg-white selection:text-black">
     <!-- Smooth Navigation -->
-    <nav class="fixed w-full z-50 px-10 py-8 flex justify-between items-center mix-blend-difference">
+    <nav class="fixed w-full z-[100] px-6 md:px-10 py-8 flex justify-between items-center mix-blend-difference">
         <a href="#" class="text-2xl font-bold tracking-tighter">NEXUS.</a>
-        <div class="flex gap-12 text-[10px] uppercase tracking-[0.3em] font-bold">
-            <a href="#" class="hover:opacity-50 transition-opacity">Work</a>
-            <a href="#" class="hover:opacity-50 transition-opacity">Studio</a>
-            <a href="#" class="hover:opacity-50 transition-opacity">Contact</a>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex gap-12 text-[10px] uppercase tracking-[0.3em] font-bold">
+            <a href="#work" class="hover:opacity-50 transition-opacity">Work</a>
+            <a href="#studio" class="hover:opacity-50 transition-opacity">Studio</a>
+            <a href="#contact" class="hover:opacity-50 transition-opacity">Contact</a>
         </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 z-[110]">
+            <span class="w-6 h-0.5 bg-white transition-transform duration-300"></span>
+            <span class="w-6 h-0.5 bg-white transition-transform duration-300"></span>
+        </button>
     </nav>
 
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-zinc-900 z-[90] mobile-menu-overlay flex flex-col justify-center px-10">
+        <div class="flex flex-col gap-8 text-5xl font-bold tracking-tighter">
+            <a href="#work" class="menu-link">WORK</a>
+            <a href="#studio" class="menu-link">STUDIO</a>
+            <a href="#contact" class="menu-link">CONTACT</a>
+        </div>
+        <div class="mt-20 flex gap-6 text-[10px] uppercase tracking-widest opacity-50">
+            <a href="#">Instagram</a>
+            <a href="#">Behance</a>
+            <a href="#">Dribbble</a>
+        </div>
+    </div>
+
     <!-- Hero Section -->
-    <section class="min-h-screen flex flex-col justify-center px-10 relative overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 blur-[150px] rounded-full"></div>
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-10 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-blue-600/10 blur-[100px] md:blur-[150px] rounded-full"></div>
         
-        <div class="relative z-10">
+        <div class="relative z-10 pt-20">
             <span class="inline-block text-[10px] uppercase tracking-[0.5em] mb-10 opacity-50">Global Design Partner</span>
-            <h1 class="text-[12vw] md:text-[10vw] font-bold leading-[0.85] tracking-tighter mb-10">
+            <h1 class="text-[15vw] md:text-[10vw] font-bold leading-[0.85] tracking-tighter mb-10">
                 CRAFTING<br>
                 <span class="text-outline">DIGITAL</span><br>
                 POETRY.
             </h1>
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-10">
-                <p class="max-w-md text-xl opacity-60 font-light leading-relaxed">
+                <p class="max-w-md text-lg md:text-xl opacity-60 font-light leading-relaxed">
                     We bridge the gap between imagination and reality, creating digital experiences that resonate on a human level.
                 </p>
                 <div class="flex gap-4">
-                    <button class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500">
+                    <a href="#work" class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500">
                         <i class="ri-arrow-right-down-line text-2xl"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Selected Works -->
-    <section class="py-40 px-10">
+    <section id="work" class="py-20 md:py-40 px-6 md:px-10">
         <div class="flex justify-between items-end mb-20">
-            <h2 class="text-5xl font-bold tracking-tighter">SELECTED WORKS</h2>
-            <span class="text-[10px] uppercase tracking-widest opacity-50">01 — 04</span>
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tighter uppercase">Selected Works</h2>
+            <span class="hidden md:inline text-[10px] uppercase tracking-widest opacity-50">01 — 04</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
             <!-- Project 1 -->
             <div class="group cursor-pointer">
                 <div class="aspect-[4/5] overflow-hidden bg-zinc-900 mb-8 relative">
@@ -74,7 +99,7 @@
             </div>
 
             <!-- Project 2 -->
-            <div class="group cursor-pointer pt-20">
+            <div class="group cursor-pointer md:pt-20">
                 <div class="aspect-[4/5] overflow-hidden bg-zinc-900 mb-8 relative">
                     <img src="https://images.unsplash.com/photo-1635405074683-96d6921a2a2c?auto=format&fit=crop&q=80&w=2070" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" alt="Project">
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -89,19 +114,76 @@
                     <span class="text-sm opacity-30">2025</span>
                 </div>
             </div>
+
+            <!-- Project 3 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[4/5] overflow-hidden bg-zinc-900 mb-8 relative">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1964" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" alt="Project">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs">View Case Study</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">SILVER LINING</h3>
+                        <p class="opacity-50 text-sm uppercase tracking-widest">Mobile Application</p>
+                    </div>
+                    <span class="text-sm opacity-30">2026</span>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="group cursor-pointer md:pt-20">
+                <div class="aspect-[4/5] overflow-hidden bg-zinc-900 mb-8 relative">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2070" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" alt="Project">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs">View Case Study</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">CORE ENGINE</h3>
+                        <p class="opacity-50 text-sm uppercase tracking-widest">Interaction Design</p>
+                    </div>
+                    <span class="text-sm opacity-30">2024</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Studio / Process -->
+    <section id="studio" class="py-20 md:py-40 px-6 md:px-10 bg-white text-black">
+        <div class="max-w-7xl mx-auto">
+            <span class="text-[10px] uppercase tracking-[0.5em] mb-10 opacity-50 block">Our Philosophy</span>
+            <h2 class="text-5xl md:text-8xl font-bold tracking-tighter leading-none mb-20">WE THINK IN SYSTEMS, BUT DESIGN FOR EMOTIONS.</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-20">
+                <div>
+                    <span class="text-sm font-bold border-b border-black pb-2 mb-6 block">01 — RESEARCH</span>
+                    <p class="opacity-70 leading-relaxed">Deep diving into your brand's DNA to understand the core message and target audience.</p>
+                </div>
+                <div>
+                    <span class="text-sm font-bold border-b border-black pb-2 mb-6 block">02 — STRATEGY</span>
+                    <p class="opacity-70 leading-relaxed">Developing a clear roadmap that bridges the gap between business goals and user needs.</p>
+                </div>
+                <div>
+                    <span class="text-sm font-bold border-b border-black pb-2 mb-6 block">03 — DESIGN</span>
+                    <p class="opacity-70 leading-relaxed">Crafting high-fidelity digital experiences that are as functional as they are beautiful.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-40 px-10 text-center relative overflow-hidden">
+    <section id="contact" class="py-40 px-6 md:px-10 text-center relative overflow-hidden">
         <div class="relative z-10">
-            <h2 class="text-[8vw] font-bold tracking-tighter leading-none mb-20">LET'S START THE<br>CONVERSATION.</h2>
-            <a href="mailto:hello@nexus.studio" class="text-3xl md:text-5xl font-bold hover:text-blue-500 transition-colors underline underline-offset-[20px] decoration-1">HELLO@NEXUS.STUDIO</a>
+            <h2 class="text-[10vw] md:text-[8vw] font-bold tracking-tighter leading-none mb-20">LET'S START THE<br>CONVERSATION.</h2>
+            <a href="mailto:hello@nexus.studio" class="text-xl md:text-5xl font-bold hover:text-blue-500 transition-colors underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 break-words">HELLO@NEXUS.STUDIO</a>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="p-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
+    <footer class="p-6 md:p-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
         <span class="text-[10px] uppercase tracking-widest opacity-30">© 2026 NEXUS STUDIO</span>
         <div class="flex gap-10 text-[10px] uppercase tracking-widest opacity-50">
             <a href="#" class="hover:text-white transition-colors">Behance</a>
@@ -110,5 +192,41 @@
         </div>
         <span class="text-[10px] uppercase tracking-widest opacity-30">HYDERABAD, INDIA</span>
     </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        const spans = menuToggle.querySelectorAll('span');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            spans[0].classList.toggle('rotate-45');
+            spans[0].classList.toggle('translate-y-2');
+            spans[1].classList.toggle('-rotate-45');
+            spans[1].classList.toggle('-translate-y-0.5');
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                spans[0].classList.remove('rotate-45', 'translate-y-2');
+                spans[1].classList.remove('-rotate-45', '-translate-y-0.5');
+            });
+        });
+
+        // Simple Parallax for Images
+        window.addEventListener('scroll', () => {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                const speed = 0.05;
+                const rect = img.getBoundingClientRect();
+                if(rect.top < window.innerHeight && rect.bottom > 0) {
+                    const yPos = -(rect.top * speed);
+                    img.style.transform = `translateY(${yPos}px) scale(1.1)`;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

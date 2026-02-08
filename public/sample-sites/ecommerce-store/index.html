@@ -8,8 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .cart-sidebar { transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .cart-sidebar.active { transform: translateX(0); }
+        .mobile-menu { transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .mobile-menu.active { transform: translateY(0); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -17,41 +21,90 @@
     <nav class="fixed w-full z-50 glass border-b border-slate-200/50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                    <i class="ri-shopping-bag-3-fill text-xl"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight">Smart<span class="text-indigo-600">Shop</span></span>
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                        <i class="ri-shopping-bag-3-fill text-xl"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">Smart<span class="text-indigo-600">Shop</span></span>
+                </a>
             </div>
+            
             <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-                <a href="#" class="hover:text-indigo-600 transition-colors">New Arrivals</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">Categories</a>
+                <a href="#new-arrivals" class="hover:text-indigo-600 transition-colors">New Arrivals</a>
+                <a href="#categories" class="hover:text-indigo-600 transition-colors">Categories</a>
                 <a href="#" class="hover:text-indigo-600 transition-colors">Deals</a>
             </div>
+
             <div class="flex items-center gap-4">
-                <button class="p-2 hover:bg-slate-100 rounded-full transition-colors"><i class="ri-search-line text-xl"></i></button>
-                <div class="relative">
-                    <button class="p-2 hover:bg-slate-100 rounded-full transition-colors"><i class="ri-shopping-cart-2-line text-xl"></i></button>
-                    <span class="absolute top-0 right-0 w-4 h-4 bg-indigo-600 text-white text-[10px] flex items-center justify-center rounded-full">3</span>
+                <div class="relative hidden sm:block">
+                    <input type="text" id="search-input" placeholder="Search products..." class="pl-10 pr-4 py-2 bg-slate-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 w-40 lg:w-60 transition-all">
+                    <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 </div>
+                <button id="cart-btn" class="relative p-2 hover:bg-slate-100 rounded-full transition-colors">
+                    <i class="ri-shopping-cart-2-line text-xl"></i>
+                    <span id="cart-count" class="absolute top-0 right-0 w-4 h-4 bg-indigo-600 text-white text-[10px] flex items-center justify-center rounded-full">0</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden p-2 hover:bg-slate-100 rounded-full transition-colors">
+                    <i class="ri-menu-4-line text-xl"></i>
+                </button>
             </div>
         </div>
     </nav>
 
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-[45] mobile-menu pt-24 px-6 md:hidden">
+        <div class="flex flex-col gap-6 text-2xl font-bold">
+            <a href="#new-arrivals" class="mobile-link">New Arrivals</a>
+            <a href="#categories" class="mobile-link">Categories</a>
+            <a href="#" class="mobile-link">Deals</a>
+        </div>
+        <div class="mt-10 pt-10 border-t border-slate-100">
+            <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-4">Support</p>
+            <div class="flex flex-col gap-4 text-slate-600 font-medium">
+                <a href="#">Contact Us</a>
+                <a href="#">Shipping Policy</a>
+                <a href="#">FAQs</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[100] shadow-2xl cart-sidebar flex flex-col">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+            <h2 class="text-xl font-bold">Your Cart</h2>
+            <button id="close-cart" class="p-2 hover:bg-slate-100 rounded-full"><i class="ri-close-line text-2xl"></i></button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+            <!-- Cart items will be injected here -->
+            <div class="text-center py-20 opacity-30">
+                <i class="ri-shopping-cart-2-line text-6xl block mb-4"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="p-6 border-t border-slate-100 bg-slate-50">
+            <div class="flex justify-between items-center mb-6">
+                <span class="font-bold text-slate-500">Subtotal</span>
+                <span id="cart-total" class="text-2xl font-extrabold text-indigo-600">$0.00</span>
+            </div>
+            <button class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/25">Checkout Now</button>
+        </div>
+    </div>
+
     <!-- Hero -->
-    <section class="pt-32 pb-20 px-6">
+    <section class="pt-32 pb-10 md:pb-20 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="bg-slate-900 rounded-[3rem] overflow-hidden relative min-h-[500px] flex items-center">
+            <div class="bg-slate-900 rounded-[2rem] md:rounded-[3rem] overflow-hidden relative min-h-[400px] md:min-h-[500px] flex items-center">
                 <div class="absolute inset-0 opacity-40">
                     <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-slate-900 via-transparent to-transparent z-10"></div>
                     <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2070" class="w-full h-full object-cover" alt="Hero">
                 </div>
-                <div class="relative z-20 px-12 md:px-20 max-w-2xl">
+                <div class="relative z-20 px-8 md:px-20 max-w-2xl">
                     <span class="inline-block px-4 py-1.5 bg-indigo-600/20 text-indigo-400 rounded-full text-xs font-bold uppercase tracking-widest mb-6">Summer Edition 2026</span>
-                    <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-[1.1] tracking-tighter">Elevate Your <span class="text-indigo-500">Digital</span> Lifestyle.</h1>
-                    <p class="text-slate-400 text-lg mb-10 leading-relaxed font-medium">Discover our curated collection of high-performance tech and premium lifestyle essentials designed for the modern era.</p>
+                    <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-6 md:mb-8 leading-[1.1] tracking-tighter">Elevate Your <span class="text-indigo-500">Digital</span> Lifestyle.</h1>
+                    <p class="text-slate-400 text-base md:text-lg mb-8 md:mb-10 leading-relaxed font-medium">Discover our curated collection of high-performance tech and premium lifestyle essentials designed for the modern era.</p>
                     <div class="flex flex-wrap gap-4">
-                        <button class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/25">Shop Collection</button>
-                        <button class="bg-white/10 text-white backdrop-blur-md px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition-all border border-white/10">View Lookbook</button>
+                        <a href="#new-arrivals" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/25 text-center w-full sm:w-auto">Shop Collection</a>
+                        <button class="bg-white/10 text-white backdrop-blur-md px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition-all border border-white/10 text-center w-full sm:w-auto">View Lookbook</button>
                     </div>
                 </div>
             </div>
@@ -59,18 +112,18 @@
     </section>
 
     <!-- Categories -->
-    <section class="py-20 px-6">
+    <section id="categories" class="py-10 md:py-20 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
                 <div>
                     <h2 class="text-3xl font-bold tracking-tight mb-2">Shop by Category</h2>
                     <p class="text-slate-500 font-medium">Everything you need, organized perfectly.</p>
                 </div>
                 <button class="text-indigo-600 font-bold hover:gap-2 flex items-center transition-all group">Browse All <i class="ri-arrow-right-line ml-2 group-hover:translate-x-1 transition-transform"></i></button>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                 <div class="group cursor-pointer">
-                    <div class="aspect-square bg-slate-200 rounded-[2.5rem] overflow-hidden mb-4 relative">
+                    <div class="aspect-square bg-slate-200 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden mb-4 relative">
                         <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1999" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Audio">
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm">Explore</span>
@@ -79,7 +132,7 @@
                     <h3 class="font-bold text-center">Premium Audio</h3>
                 </div>
                 <div class="group cursor-pointer">
-                    <div class="aspect-square bg-slate-200 rounded-[2.5rem] overflow-hidden mb-4 relative">
+                    <div class="aspect-square bg-slate-200 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden mb-4 relative">
                         <img src="https://images.unsplash.com/photo-1526170315876-ef6d86f883d2?auto=format&fit=crop&q=80&w=2070" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Cameras">
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm">Explore</span>
@@ -88,7 +141,7 @@
                     <h3 class="font-bold text-center">Photography</h3>
                 </div>
                 <div class="group cursor-pointer">
-                    <div class="aspect-square bg-slate-200 rounded-[2.5rem] overflow-hidden mb-4 relative">
+                    <div class="aspect-square bg-slate-200 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden mb-4 relative">
                         <img src="https://images.unsplash.com/photo-1546868889-4e0c68197577?auto=format&fit=crop&q=80&w=1964" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Wearables">
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm">Explore</span>
@@ -97,7 +150,7 @@
                     <h3 class="font-bold text-center">Wearables</h3>
                 </div>
                 <div class="group cursor-pointer">
-                    <div class="aspect-square bg-slate-200 rounded-[2.5rem] overflow-hidden mb-4 relative">
+                    <div class="aspect-square bg-slate-200 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden mb-4 relative">
                         <img src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?auto=format&fit=crop&q=80&w=1964" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Computers">
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm">Explore</span>
@@ -105,6 +158,20 @@
                     </div>
                     <h3 class="font-bold text-center">Apple Ecosystem</h3>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals / Products -->
+    <section id="new-arrivals" class="py-20 px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold tracking-tight mb-4">Featured Innovations</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto font-medium text-lg">Handpicked selection of our most advanced technology products for your daily workflow.</p>
+            </div>
+            
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Products will be injected by JS -->
             </div>
         </div>
     </section>
@@ -129,7 +196,129 @@
                     <div class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-indigo-600 transition-colors cursor-pointer"><i class="ri-twitter-x-line"></i></div>
                 </div>
             </div>
+            <div class="mt-20 pt-10 border-t border-slate-800 text-center text-sm opacity-50">
+                <p>© 2026 SmartShop. All rights reserved. Designed for Excellence.</p>
+            </div>
         </div>
     </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: "SonicPro Wireless", price: 299.00, category: "Audio", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=2070" },
+            { id: 2, name: "Lumina X1 Camera", price: 1249.00, category: "Photography", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=2070" },
+            { id: 3, name: "Vantage Smartwatch", price: 399.00, category: "Wearables", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=2070" },
+            { id: 4, name: "Horizon Laptop M3", price: 1499.00, category: "Computers", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=2071" },
+            { id: 5, name: "Aura Noise Cancelling", price: 349.00, category: "Audio", image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=2065" },
+            { id: 6, name: "NeoTab 12 Pro", price: 899.00, category: "Computers", image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=2030" }
+        ];
+
+        let cart = [];
+        const productGrid = document.getElementById('product-grid');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const cartBtn = document.getElementById('cart-btn');
+        const closeCart = document.getElementById('close-cart');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const cartTotal = document.getElementById('cart-total');
+        const searchInput = document.getElementById('search-input');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function renderProducts(items) {
+            productGrid.innerHTML = items.map(product => `
+                <div class="group">
+                    <div class="aspect-[4/5] bg-slate-100 rounded-[2rem] overflow-hidden mb-6 relative">
+                        <img src="${product.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${product.name}">
+                        <button onclick="addToCart(${product.id})" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-slate-900 px-8 py-3 rounded-xl font-bold text-sm shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start px-2">
+                        <div>
+                            <p class="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-1">${product.category}</p>
+                            <h3 class="text-xl font-extrabold">${product.name}</h3>
+                        </div>
+                        <p class="text-lg font-bold text-slate-500">$${product.price.toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCart();
+            openCartDrawer();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            cartCount.innerText = cart.length;
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-20 opacity-30">
+                        <i class="ri-shopping-cart-2-line text-6xl block mb-4"></i>
+                        <p>Your cart is empty</p>
+                    </div>`;
+                cartTotal.innerText = '$0.00';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = cart.map((item, index) => `
+                <div class="flex gap-4 items-center">
+                    <div class="w-20 h-20 bg-slate-100 rounded-xl overflow-hidden shrink-0">
+                        <img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}">
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm">${item.name}</h4>
+                        <p class="text-xs text-slate-500">$${item.price.toFixed(2)}</p>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-red-500 transition-colors">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function openCartDrawer() { cartSidebar.classList.add('active'); }
+        function closeCartDrawer() { cartSidebar.classList.remove('active'); }
+
+        cartBtn.addEventListener('click', openCartDrawer);
+        closeCart.addEventListener('click', closeCartDrawer);
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(term) || 
+                p.category.toLowerCase().includes(term)
+            );
+            renderProducts(filtered);
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = mobileMenu.classList.contains('active') ? 
+                '<i class="ri-close-line text-xl"></i>' : 
+                '<i class="ri-menu-4-line text-xl"></i>';
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="ri-menu-4-line text-xl"></i>';
+            });
+        });
+
+        // Initialize
+        renderProducts(products);
+    </script>
 </body>
 </html>
