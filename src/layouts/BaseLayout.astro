@@ -97,7 +97,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
 		</style>
 	</head>
-	<body class="bg-white text-gray-800 antialiased dark:bg-gray-950 dark:text-gray-100 transition-colors duration-500">
+	<body class="bg-white text-gray-800 antialiased dark:bg-gray-950 dark:text-gray-100 transition-colors duration-500 selection:bg-primary selection:text-white">
 		<div id="shutter"></div>
 		<div class="grain"></div>
 
@@ -125,22 +125,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 						Contact Us
 					</a>
           <!-- Hamburger Button -->
-          <button id="menu-btn" aria-label="Toggle Menu" aria-expanded="false" class="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 z-50 relative group">
-            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:rotate-45 group-[.active]:translate-y-2"></span>
+          <button id="menu-btn" aria-label="Toggle Menu" aria-expanded="false" class="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 z-[100] relative group">
+            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:rotate-45 group-[.active]:translate-y-2 group-[.active]:bg-gray-900 dark:group-[.active]:bg-white"></span>
             <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:opacity-0"></span>
-            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:-rotate-45 group-[.active]:-translate-y-2"></span>
+            <span class="w-6 h-0.5 bg-gray-800 dark:bg-white transition-all duration-300 group-[.active]:-rotate-45 group-[.active]:-translate-y-2 group-[.active]:bg-gray-900 dark:group-[.active]:bg-white"></span>
           </button>
 				</div>
 			</nav>
       
       <!-- Mobile Menu Overlay -->
-      <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-gray-900 z-40 translate-x-full transition-transform duration-500 md:hidden flex flex-col justify-center items-center">
+      <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-gray-900 z-[90] translate-x-full transition-transform duration-700 cubic-bezier(0.19, 1, 0.22, 1) md:hidden flex flex-col justify-center items-center">
         <nav class="flex flex-col items-center space-y-8">
-          <a href={`${import.meta.env.BASE_URL}#home`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Home</a>
-          <a href={`${import.meta.env.BASE_URL}#services`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Services</a>
-          <a href={`${import.meta.env.BASE_URL}#process`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Process</a>
-          <a href={`${import.meta.env.BASE_URL}#creators`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Team</a>
-          <a href={`${import.meta.env.BASE_URL}#contact`} class="text-3xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link">Contact</a>
+          <a href={`${import.meta.env.BASE_URL}#home`} class="text-4xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link opacity-0 translate-y-10">Home</a>
+          <a href={`${import.meta.env.BASE_URL}#services`} class="text-4xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link opacity-0 translate-y-10">Services</a>
+          <a href={`${import.meta.env.BASE_URL}#process`} class="text-4xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link opacity-0 translate-y-10">Process</a>
+          <a href={`${import.meta.env.BASE_URL}#creators`} class="text-4xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link opacity-0 translate-y-10">Team</a>
+          <a href={`${import.meta.env.BASE_URL}#contact`} class="text-4xl font-black text-gray-900 dark:text-white hover:text-primary transition-colors mobile-link opacity-0 translate-y-10">Contact</a>
         </nav>
       </div>
 		</header>
@@ -251,15 +251,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           if (menu.classList.contains('translate-x-full')) {
             menu.classList.remove('translate-x-full');
             document.body.style.overflow = 'hidden';
+            // Staggered Reveal
+            gsap.to(links, {
+              y: 0,
+              autoAlpha: 1,
+              stagger: 0.1,
+              delay: 0.3,
+              duration: 0.8,
+              ease: "power4.out"
+            });
           } else {
             menu.classList.add('translate-x-full');
             document.body.style.overflow = '';
+            // Reset links
+            gsap.set(links, { y: 40, autoAlpha: 0 });
           }
         };
 
         btn.onclick = toggleMenu;
         links.forEach(link => {
           link.onclick = toggleMenu;
+        });
+      }
+
+      function initCustomCursor() {
+        const cursor = document.getElementById('custom-cursor');
+        if (!cursor) return;
+
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        const animate = () => {
+          const lerp = 0.1;
+          cursorX += (mouseX - cursorX) * lerp;
+          cursorY += (mouseY - cursorY) * lerp;
+          cursor.style.transform = `translate3d(${cursorX - 16}px, ${cursorY - 16}px, 0)`;
+          requestAnimationFrame(animate);
+        };
+        animate();
+
+        // Hover effects
+        const interactables = document.querySelectorAll('a, button, .tilt-card');
+        interactables.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            gsap.to(cursor, { scale: 2.5, backgroundColor: 'rgba(59, 130, 246, 0.1)', duration: 0.3 });
+          });
+          el.addEventListener('mouseleave', () => {
+            gsap.to(cursor, { scale: 1, backgroundColor: 'rgba(59, 130, 246, 0.2)', duration: 0.3 });
+          });
         });
       }
 

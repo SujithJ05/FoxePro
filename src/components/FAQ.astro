@@ -28,19 +28,65 @@ const faqs = [
 
     <div class="space-y-4">
       {faqs.map((faq, index) => (
-        <div class="border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-primary/30 transition-colors" data-aos="fade-up" data-aos-delay={index * 100}>
+        <div class="faq-item border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden hover:border-primary/30 transition-colors" data-aos="fade-up" data-aos-delay={index * 100}>
           <button 
-            class="w-full px-8 py-6 text-left flex justify-between items-center bg-gray-50/50 dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
-            onclick={`const content = this.nextElementSibling; const icon = this.querySelector('i'); content.classList.toggle('hidden'); icon.classList.toggle('rotate-180');`}
+            class="faq-trigger w-full px-8 py-7 text-left flex justify-between items-center bg-gray-50/30 dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all group"
           >
-            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">{faq.question}</span>
-            <i class="ri-arrow-down-s-line text-2xl text-gray-400 dark:text-gray-500 group-hover:text-primary transition-all"></i>
+            <span class="text-xl font-black text-gray-800 dark:text-gray-200 tracking-tight">{faq.question}</span>
+            <div class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
+              <i class="ri-add-line text-xl transition-transform duration-500"></i>
+            </div>
           </button>
-          <div class="px-8 py-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 hidden">
-            <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">{faq.answer}</p>
+          <div class="faq-content h-0 overflow-hidden bg-white dark:bg-gray-900">
+            <div class="px-8 pb-8 pt-2">
+              <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-lg font-medium">{faq.answer}</p>
+            </div>
           </div>
         </div>
       ))}
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initFAQ() {
+    const triggers = document.querySelectorAll('.faq-trigger');
+    
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const content = item.querySelector('.faq-content');
+        const icon = trigger.querySelector('i');
+        const isOpen = item.classList.contains('active');
+
+        // Close others
+        document.querySelectorAll('.faq-item.active').forEach(otherItem => {
+          if (otherItem !== item) {
+            const otherContent = otherItem.querySelector('.faq-content');
+            const otherIcon = otherItem.querySelector('i');
+            gsap.to(otherContent, { height: 0, duration: 0.5, ease: "power4.inOut" });
+            otherIcon.classList.remove('rotate-45');
+            otherItem.classList.remove('active');
+          }
+        });
+
+        // Toggle current
+        if (isOpen) {
+          gsap.to(content, { height: 0, duration: 0.5, ease: "power4.inOut" });
+          icon.classList.remove('rotate-45');
+          item.classList.remove('active');
+        } else {
+          gsap.set(content, { height: 'auto' });
+          const fullHeight = content.offsetHeight;
+          gsap.fromTo(content, { height: 0 }, { height: fullHeight, duration: 0.5, ease: "power4.out" });
+          icon.classList.add('rotate-45');
+          item.classList.add('active');
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initFAQ);
+</script>

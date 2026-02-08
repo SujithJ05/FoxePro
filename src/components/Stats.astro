@@ -7,15 +7,16 @@ const stats = [
 ];
 ---
 
-<section class="py-12 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 transition-colors duration-500">
+<section class="py-12 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 transition-colors duration-500 overflow-hidden">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
       {stats.map((stat, index) => (
         <div class="text-center group" data-aos="fade-up" data-aos-delay={index * 100}>
-          <h3 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors cursor-default">
-            {stat.value}
+          <h3 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors cursor-default flex items-center justify-center">
+            <span class="stat-value" data-value={stat.value.replace(/[^0-9]/g, '')}>0</span>
+            <span class="text-primary">{stat.value.replace(/[0-9]/g, '')}</span>
           </h3>
-          <p class="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+          <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
             {stat.label}
           </p>
         </div>
@@ -23,3 +24,33 @@ const stats = [
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initStats() {
+    const statValues = document.querySelectorAll('.stat-value');
+    
+    statValues.forEach(el => {
+      const target = parseInt(el.getAttribute('data-value') || '0');
+      
+      gsap.to(el, {
+        innerText: target,
+        duration: 2,
+        snap: { innerText: 1 },
+        scrollTrigger: {
+          trigger: el,
+          start: "top 90%",
+          toggleActions: "play none none none",
+          once: true
+        },
+        ease: "power2.out"
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initStats);
+</script>
