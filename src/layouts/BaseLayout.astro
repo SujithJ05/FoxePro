@@ -274,39 +274,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         });
       }
 
-      function initCustomCursor() {
-        const cursor = document.getElementById('custom-cursor');
-        if (!cursor) return;
-
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-
-        window.addEventListener('mousemove', (e) => {
-          mouseX = e.clientX;
-          mouseY = e.clientY;
-        });
-
-        const animate = () => {
-          const lerp = 0.1;
-          cursorX += (mouseX - cursorX) * lerp;
-          cursorY += (mouseY - cursorY) * lerp;
-          cursor.style.transform = `translate3d(${cursorX - 16}px, ${cursorY - 16}px, 0)`;
-          requestAnimationFrame(animate);
-        };
-        animate();
-
-        // Hover effects
-        const interactables = document.querySelectorAll('a, button, .tilt-card');
-        interactables.forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            gsap.to(cursor, { scale: 2.5, backgroundColor: 'rgba(59, 130, 246, 0.1)', duration: 0.3 });
-          });
-          el.addEventListener('mouseleave', () => {
-            gsap.to(cursor, { scale: 1, backgroundColor: 'rgba(59, 130, 246, 0.2)', duration: 0.3 });
-          });
-        });
-      }
-
       function initScrollTop() {
         const btn = document.getElementById('scroll-top');
         if (!btn) return;
